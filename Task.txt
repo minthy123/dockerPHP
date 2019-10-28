@@ -15,8 +15,8 @@ Task need to be done:
 			+ EXPOSE
 			+ ENV
 
-		- Handle dependent lib
-		- Handle version of lib
+		- Handle dependent libs
+		- Handle version of libs
 		- Add data about lib to DB
 		- Handle ENTRYPOINT which can make container as a excutable file 
 
