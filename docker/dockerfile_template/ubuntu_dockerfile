@@ -1,0 +1,62 @@
+# To build image: docker build -t test_image -f ubuntu_dockerfile .
+# To create and run container: docker run --name test_container -p 8888:8888 -p 8080:8080 -p 1000:22 -d test_image
+# If you want to let docker choose port: docker run --name test_container -P -d test_image 
+# And check port via: docker port test_container
+# To exec container: docker exec -it test_container /bin/bash
+
+FROM ubuntu:latest
+
+RUN apt-get update -y
+
+##### python
+RUN apt-get install -y python3-dev python3-pip
+
+#numpy and scpi
+RUN apt-get install -y python3-numpy python3-scipy
+
+#C ++
+RUN apt-get install -y g++
+
+### torch for CPU
+RUN pip3 install torch==1.3.0+cpu torchvision==0.4.1+cpu -f https://download.pytorch.org/whl/torch_stable.html
+
+##### jupyter
+RUN pip3 install jupyter
+
+###### tensorflow without cpu
+RUN pip3 install --user --upgrade tensorflow
+
+###### keras
+RUN pip3 install keras
+
+#### theano
+RUN pip3 install theano
+
+######## ssh #####
+RUN apt-get install -y openssh-server
+
+##### go lang to install gotty #####
+RUN apt-get update && apt-get -y dist-upgrade
+RUN apt-get install -y golang git
+
+ENV GOPATH /usr/go
+RUN mkdir $GOPATH
+ENV PATH $GOPATH/bin:$PATH
+
+#### gotty #######
+# This lib is used for web terminal application
+# default port 8080
+# can access localhost:8080 to excute
+RUN go get github.com/yudai/gotty
+
+
+#######home
+RUN mkdir /home/user
+WORKDIR /home/user/
+
+EXPOSE 8888
+EXPOSE 22
+EXPOSE 8080
+
+#cmd tail -f /dev/null makes the 
+CMD jupyter notebook --ip 0.0.0.0 --no-browser --allow-root | gotty -w /bin/bash | tail -f /dev/null

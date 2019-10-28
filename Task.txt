@@ -1,11 +1,20 @@
 Task need to be done:
 	+ Docker image
 		- Create a project structe: Done
+		- Add docker templates: Done
 		- Create entity to contain lib: Done
 		- Hard code value of command of lib to generate a simple dockerfile: Done 
 		- Use sqlite to replace hard-code value: Done
 		- Generate docker-build command from lib: Done
 		- Allow user to choose lib to build docker
+		- Optimize each instructor
+			+ Make docker_instructor to enum
+			+ FROM 
+			+ RUN
+			+ CMD
+			+ EXPOSE
+			+ ENV
+
 		- Handle dependent lib
 		- Handle version of lib
 		- Add data about lib to DB
@@ -16,10 +25,13 @@ Task need to be done:
 		- Create a service to generate another commands 'docker run': Done
 		- Generate 'docker run' command from the lib
 		- Handle port with 'docker ports'
+		- Handle mount voulumne
 
 	+ Excute docker command
 		- Research docker-in-docker: Done
 			-> This is the way to call docker commands to host machine from a docker
+		- Build a docker containing php which can call docker commands to host machine from a docker
+
 		- Create a service to excute docker commands directly from php
 		- Manage names of docker images and containers
 
