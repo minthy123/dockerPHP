@@ -42,12 +42,7 @@
                 $result .= $this->createCommand($library);
             }
 
-            echo $result."\n";
+            return $result."\n";
         }
     }
-
-
-    
-    $docker = new DockerfileService();
-    $docker->createDockerfile();
 ?>

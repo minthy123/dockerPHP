@@ -1,0 +1,41 @@
+Task need to be done:
+	+ Docker image
+		- Create a project structe: Done
+		- Create entity to contain lib: Done
+		- Hard code value of command of lib to generate a simple dockerfile: Done 
+		- Use sqlite to replace hard-code value: Done
+		- Generate docker-build command from lib: Done
+		- Allow user to choose lib to build docker
+		- Handle dependent lib
+		- Handle version of lib
+		- Add data about lib to DB
+		- Handle ENTRYPOINT which can make container as a excutable file 
+
+	+ Docker container
+		- Create a service to generate a simple 'docker run': Done
+		- Create a service to generate another commands 'docker run': Done
+		- Generate 'docker run' command from the lib
+		- Handle port with 'docker ports'
+
+	+ Excute docker command
+		- Research docker-in-docker: Done
+			-> This is the way to call docker commands to host machine from a docker
+		- Create a service to excute docker commands directly from php
+		- Manage names of docker images and containers
+
+	+ Web
+		- Upload files
+		- Manage upload files
+		- Open terminal to comminucate with container: Done
+			-> xterm.js, gotty
+
+	+ UI:
+		- Add a simple web to show output and input the value from user
+		- Find a template
+		- Implement a template to project
+		- UI for choosing libs
+		- UI for showing the dockerfile
+		- UI for showing docker command (build, run)
+		- UI for upload file
+		- UI for terminal
+		- (Optional) UI for adding library
