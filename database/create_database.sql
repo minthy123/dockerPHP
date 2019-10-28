@@ -1,0 +1,12 @@
+CREATE TABLE IF NOT EXISTS library (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL UNIQUE
+);
+
+CREATE TABLE IF NOT EXISTS command (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    docker_instructor TEXT NOT NULL,
+    cmd TEXT NOT NULL,
+    library_id INTEGER NOT NULL,
+    FOREIGN KEY(library_id) REFERENCES library(id)
+)
