@@ -1,14 +1,11 @@
 <?php
-    include_once('../dao/LibraryDao.php');
-    include_once('../dao/CommandDao.php');
+    include_once('LibraryService.php');
     class DockerfileService {
         
-        private $libraryDao;
-        private $commandDao;
+        private $libraryService;
 
         function __construct(){
-            $this->libraryDao = new LibraryDao();
-            $this->commandDao = new CommandDao();
+            $this->libraryService = new LibraryService();
         }
 
         function createCommand($library) {
@@ -20,22 +17,8 @@
             return $string;
         }
 
-        function mapCommandAndLibrary($libraries, $commands) {
-            foreach ($libraries as $library) {
-                $library->setCommands([]);
-                foreach ($commands as $command) {
-                    if ($command->getLibraryId() == $library->getId()) {
-                        $library->addCommand($command);
-                    }
-                }
-            }
-        }
-
         function createDockerfile() {
-            $libraries = $this->libraryDao->getAll();
-            $commands = $this->commandDao->getAll();
-
-            $this->mapCommandAndLibrary($libraries, $commands);
+            $libraries = $this->$libraryService->getLibraries(Array(2));
 
             $result = "";
             foreach ($libraries as $library) {

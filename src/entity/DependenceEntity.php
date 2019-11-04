@@ -16,7 +16,7 @@
             return $this->libraryId;
         }
 
-        function septParentLibraryId($parentLibraryId) {
+        function setParentLibraryId($parentLibraryId) {
             $this->parentLibraryId = $parentLibraryId;
         }
 
