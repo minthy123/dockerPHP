@@ -38,7 +38,7 @@
         }
 
         function getLibraryId() {
-            return $libraryId->libraryId;
+            return $this->libraryId;
         }
 
         function setDockerInstruction($dockerInstruction) {

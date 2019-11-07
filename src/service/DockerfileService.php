@@ -18,9 +18,10 @@
         }
 
         function createDockerfile() {
-            $libraries = $this->$libraryService->getLibraries(Array(2));
+            $libraries = $this->libraryService->getLibraries(Array(2));
 
             $result = "";
+
             foreach ($libraries as $library) {
                 $result .= $this->createCommand($library);
             }

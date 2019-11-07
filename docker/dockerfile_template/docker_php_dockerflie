@@ -37,8 +37,8 @@ RUN go get github.com/yudai/gotty
 ##########
 ENV DEBIAN_FRONTEND=noninteractive
 
-RUN apt-get update && apt-get -y upgrade && DEBIAN_FRONTEND=noninteractive apt-get -y install \
-    apache2 php7.2 php7.2-mysql libapache2-mod-php7.2
+RUN apt-get update && apt-get -y upgrade && apt-get -y install \
+    apache2 php7.2 php7.2-curl libapache2-mod-php7.2 php7.2-sqlite3
 
 RUN a2enmod php7.2
 RUN a2enmod rewrite
@@ -55,5 +55,6 @@ ENV APACHE_PID_FILE /var/run/apache2.pid
 
 # Expose apache.
 EXPOSE 80
+EXPOSE 8080
 
-CMD gotty -w /bin/bash | /usr/sbin/apache2ctl -D FOREGROUND | tail -f /dev/null 
+CMD gotty --credential minhty:AyeChanMoe123 -w /bin/bash | /usr/sbin/apache2ctl -D FOREGROUND | tail -f /dev/null 
