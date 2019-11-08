@@ -17,22 +17,23 @@
 |        |                                                          |        |
 | Week 2 | Enhance dockerfile and docker command                    |        |
 |        | + Handle dependent libs in dockerfile                    |  Done  |
-|        | + Optimize dockerfile                                    |        |
+|        | + Optimize dockerfile                                    |  Done  |
 |        | + Allow user to choose lib                               |        |
 |        | + Add data to database                                   |        |
 |        | + Create model for list of docker container              |  Done  |
 |        | + Create model for list of docker image                  |  Done  |
 |        | + Excute docker command to get container, image info     |  Done  |
-|        | + Ehnahce docker build and docker run                    |        |
+|        | + Ehnahce docker build and docker run                    |  Done  |
 |        |                                                          |        |
 | Week 3 | Docker command && Simple UI                              |        |
-|        | + Start, delete, pause, ... docker commands              |        |
+|        | + Start, delete, pause, ... docker commands              |  Done  |
+|        | + Build workflow to create image, containers             |  	     |
 |        | + Find a UI template                                     |        |
 |        | + UI for dockerfile                                      |        |
 |        | + UI for docker commands                                 |        |
-|        | + Button to excute docker commands                       |        |
 |        |                                                          |        |
 | Week 4 | UI for managing container, image                         |        |
+|        | + Button to excute docker commands                       |        |
 |        | + UI for choosing lib                                    |        |
 |        | + UI for list of docker image, containers                |        |
 |        | + UI for container detail                                |        |

@@ -5,6 +5,11 @@
     class ImageClient {
         private $dockerClient;
 
+        private static STOP_IMAGE_COMMAND = '/images/%s/stop';
+        private static START_IMAGE_COMMAND = '/images/%s/start';
+        private static RESTART_IMAGE_COMMAND = '/images/%s/restart?t=5';
+        private static KILL_IMAGE_COMMAND = '/images/%s/kill';
+
         public function __construct() {
             $this->dockerClient = new DockerClient();
         }
