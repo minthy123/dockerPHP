@@ -1,7 +1,7 @@
 # docker build -t docker_php_image -f docker_php_dockerflie .
-# docker run --name docker_container -v /var/run/docker.sock:/var/run/docker.sock -p 8080:8080 -p 80:80 -d docker_image 
+# docker run --name docker_container -v /var/run/docker.sock:/var/run/docker.sock -p 8080:8080 -p 80:80 -d docker_php_image 
 
-# docker run --name docker_container -v /var/run/docker.sock:/var/run/docker.sock -P -v /home/minhty/Documents/dockerPHP/:/var/www/html/ -d docker_image 
+# docker run --name docker_container -v /var/run/docker.sock:/var/run/docker.sock -P -v /home/minhty/Documents/dockerPHP/:/var/www/html/ -d docker_php_image 
 
 FROM ubuntu:latest
 
@@ -48,15 +48,17 @@ RUN a2enmod rewrite
 RUN sed -i "s/short_open_tag = Off/short_open_tag = On/" /etc/php/7.2/apache2/php.ini
 RUN sed -i "s/error_reporting = .*$/error_reporting = E_ERROR | E_WARNING | E_PARSE/" /etc/php/7.2/apache2/php.ini
 
+RUN groupadd docker
+RUN usermod -aG docker www-data
+RUN newgrp docker 
+
 # Manually set up the apache environment variables
 ENV APACHE_RUN_USER www-data
-ENV APACHE_RUN_GROUP www-data
 ENV APACHE_LOG_DIR /var/log/apache2
 ENV APACHE_LOCK_DIR /var/lock/apache2
 ENV APACHE_PID_FILE /var/run/apache2.pid
 
 # Expose apache.
-EXPOSE 80
-EXPOSE 8080
+EXPOSE 80, 8080
 
-CMD gotty -c minhty:AyeChanMoe123 -w /bin/bash | /usr/sbin/apache2ctl -D FOREGROUND | tail -f /dev/null 
+CMD gotty -w /bin/bash | /usr/sbin/apache2ctl -D FOREGROUND | tail -f /dev/null 

@@ -14,6 +14,7 @@
 			    while ($s = fgets($pipes[1])) {
 			        print $s;
 			        flush();
+    				ob_flush();
 			    }
 			}
 			echo "</pre>";	

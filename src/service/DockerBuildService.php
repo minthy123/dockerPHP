@@ -32,7 +32,7 @@
             echo $commandExecution->execute($this->buildCommand);
         }
 
-        private function saveDockerfile($content, $filename) {
+        function saveDockerfile($content, $filename) {
             try {
                 $filename = "/tmp/" . $filename;
                 if(!file_exists($filename)){
@@ -49,6 +49,11 @@
                 echo 'Caught exception: ',  $e->getMessage(), "\n";
             }
         }
+    }
+
+    if (isset($_POST['dockerfile'])) {
+        $dockerBuildService = new DockerBuildService();
+        $dockerBuildService->excuteCommand($_POST['dockerfile']);
     }
 
 

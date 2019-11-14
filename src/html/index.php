@@ -53,6 +53,44 @@
 			.done(function(data) {
 				$('#build-docker-log').append(data);
 			});
+
+		// var lastResponseLength = false;
+	 //    var ajaxRequest = $.ajax({
+	 //        type: 'post',
+	 //        url: '/src/restclient/CommandExecution.php',
+	 //        data: {cmd : $('#build-command').text()},
+	 //        processData: false,
+	 //        xhrFields: {
+	 //            // Getting on progress streaming response
+	 //            onprogress: function(e)
+	 //            {
+	 //                var progressResponse;
+	 //                var response = e.currentTarget.response;
+	 //                if(lastResponseLength === false)
+	 //                {
+	 //                    progressResponse = response;
+	 //                    lastResponseLength = response.length;
+	 //                }
+	 //                else
+	 //                {
+	 //                    progressResponse = response.substring(lastResponseLength);
+	 //                    lastResponseLength = response.length;
+	 //                }
+	 //                $('#build-docker-log').append(progressResponse);
+	       
+	 //            }
+	 //        }
+	 //    });
+	 //    // On completed
+	 //    ajaxRequest.done(function(data)
+	 //    {
+	 //        console.log('Complete response = ' + data);
+	 //    });
+	 //    // On failed
+	 //    ajaxRequest.fail(function(error){
+	 //        console.log('Error: ', error);
+	 //    });
+	    console.log('Request Sent');
 	});
 </script>
 
@@ -95,12 +133,12 @@
 </script>
 
 <div class="list-containers">
-	All docker Containers:
-	<button id="button-list-containers">List</button>
+	All docker containers:
+	<button id="button-list-images">List</button>
 </div>
 
 <script type="text/javascript">
-	$('#button-list-containers').click(function(e) {
+	$('#button-list-images').click(function(e) {
 		$.get('/src/restclient/ContainerClient.php?list-all=true')
 			.done(function(data) {
 				$('.list-containers').append(data);

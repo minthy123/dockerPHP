@@ -47,17 +47,17 @@
 
         private function loadAllDependentLibraryId($libraryIds) {
 
-            // stack
+            // queue
             $queue = $libraryIds;
             $top=0;
-            $sizeOfQueue=0; 
+            $sizeOfQueue=count($libraryIds); 
 
             $result = Array();
 
             $dependences = $this->dependenceDao->getAll();
 
             while ($top < $sizeOfQueue + 1) {
-                // pop stack
+                // pop que
                 $libId=$queue[$top];
                 $top++;
 
@@ -72,7 +72,7 @@
                         continue;
                     }
 
-                    //push to stack
+                    //push to queue
                     array_push($queue, $de->getParentLibraryId());
                     $sizeOfQueue++;
                 }

@@ -1,7 +1,0 @@
-function buildocker() {
-	$.ajax({
-	    type: "GET",
-	    url: 'src/restclient/ExcuteCommand.php',
-	    data: {cmd: ''}
-	});
-}

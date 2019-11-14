@@ -30,7 +30,7 @@
             return $result;
         }
 
-        private static function mergeCommands($commands) {
+        private function mergeCommands($commands) {
             $dockerfile = new Dockerfile();
             $cmd = new CommandEntity(0, "CMD", "", 0);
             $expose = new CommandEntity(0, "EXPOSE", "", 0);
@@ -58,7 +58,27 @@
 
             $dockerfile->setRuns($runs);
 
+            $this->saveDockerfile($dockerfile->toString(false), 'dockerfile');
+
             return $dockerfile;
+        }
+
+        function saveDockerfile($content, $filename) {
+            try {
+                $filename = "/tmp/" . $filename;
+                if(!file_exists($filename)){
+                    touch($filename);
+                    chmod($filename, 0777);
+                }
+
+                $dockerfile1 = fopen($filename, "w") or die("Unable to open file!");
+
+
+                fwrite($dockerfile1, $content);
+                fclose($dockerfile1);
+            } catch (Exception $e) {
+                echo 'Caught exception: ',  $e->getMessage(), "\n";
+            }
         }
         
         function createDockerfile($libraryIds) {
