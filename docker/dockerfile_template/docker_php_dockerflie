@@ -1,6 +1,8 @@
 # docker build -t docker_php_image -f docker_php_dockerflie .
 # docker run --name docker_container -v /var/run/docker.sock:/var/run/docker.sock -p 8080:8080 -p 80:80 -d docker_image 
 
+# docker run --name docker_container -v /var/run/docker.sock:/var/run/docker.sock -P -v /home/minhty/Documents/dockerPHP/:/var/www/html/ -d docker_image 
+
 FROM ubuntu:latest
 
 RUN apt-get update -y
@@ -57,4 +59,4 @@ ENV APACHE_PID_FILE /var/run/apache2.pid
 EXPOSE 80
 EXPOSE 8080
 
-CMD gotty --credential minhty:AyeChanMoe123 -w /bin/bash | /usr/sbin/apache2ctl -D FOREGROUND | tail -f /dev/null 
+CMD gotty -c minhty:AyeChanMoe123 -w /bin/bash | /usr/sbin/apache2ctl -D FOREGROUND | tail -f /dev/null 

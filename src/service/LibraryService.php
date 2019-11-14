@@ -2,6 +2,7 @@
     include_once('../dao/LibraryDao.php');
     include_once('../dao/CommandDao.php');
     include_once('../dao/DependenceDao.php');
+    
     class LibraryService {
         
         private $libraryDao;

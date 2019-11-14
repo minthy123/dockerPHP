@@ -8,19 +8,19 @@
         function __construct() {}
 
         function generateRemoveImage($imageName) {
-            return str_replace("<image_name>", $imageName,self::$REMOVE_IMAGE);
+            return str_replace("<image_name>", $imageName, self::REMOVE_IMAGE);
         }
 
         function generateCheckLog($containerName) {
-            return str_replace("<container_name>", $containerName,self::$LOGS);
+            return str_replace("<container_name>", $containerName,self::LOGS);
         }
 
         function generateCheckPort($containerName) {
-            return str_replace("<container_name>", $containerName,self::$PORT);
+            return str_replace("<container_name>", $containerName,self::PORT);
         }
 
         function generateExec($containerName) {
-            return str_replace("<container_name>", $containerName,self::$EXEC);
+            return str_replace("<container_name>", $containerName,self::EXEC);
         }
     }
 

@@ -48,5 +48,9 @@
         function getDockerInstruction() {
             return $this->dockerInstruction;
         }
+
+        function toString() {
+            return $this->getDockerInstruction() . " " . $this->getCmd();
+        }
     }
 ?>
