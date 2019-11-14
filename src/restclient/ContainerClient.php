@@ -10,6 +10,7 @@
 
         private static $LIST_ALL_CONTAINERS = '/containers/json';
 
+
         private $dockerClient;
 
         public function __construct() {
@@ -19,6 +20,7 @@
         public function getAllContainers() {
             $result = [];
             $jsonArray = $this->dockerClient->dispatchCommand(self::$LIST_ALL_CONTAINERS);
+
             foreach ($jsonArray as $key=>$json) {
                 array_push($result, Container::fromJSONObject($json));
             }
@@ -30,12 +32,14 @@
             $result = [];
             $this->dockerClient->postCommand(
                 $this->replaceContainerId(self::$STOP_CONTAINER_COMMAND, $container->getId()));
+
         }
 
         public function startConatiner($container) {
             $result = [];
             $this->dockerClient->postCommand(
                 $this->replaceContainerId(self::$START_CONTAINER_COMMAND, $container->getId()));
+
         }
 
         private static function replaceContainerId($command, $containerId){
