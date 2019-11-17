@@ -4,10 +4,12 @@
         private $name;
 
         private $commands;
+        private $isGPU;
 
-        function __construct($id, $name) {
+        function __construct($id, $name, $isGPU) {
             $this->setId($id);
             $this->setName($name);
+            $this->setIsGPU($isGPU);
         }
 
         function setId($id) {
@@ -24,6 +26,14 @@
 
         function getName() {
             return $this->name;
+        }
+
+        function setIsGPU($isGPU) {
+            $this -> isGPU = $isGPU;
+        }
+
+        function getIsGPU() {
+            return $this->isGPU;
         }
 
         function setCommands($commands) {

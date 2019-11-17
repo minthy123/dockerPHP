@@ -11,7 +11,7 @@
 
             $result = [];
             while($row = $ret->fetchArray(SQLITE3_ASSOC) ) {
-               array_push($result, new LibraryEntity($row['id'], $row['name']));
+               array_push($result, new LibraryEntity($row['id'], $row['name'], $row['isGPU']));
             }
             
             $db->close();

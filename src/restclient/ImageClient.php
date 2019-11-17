@@ -27,7 +27,6 @@
 	
     }
 
-
     if (isset($_GET['list-all'])) {
         $a = new ImageClient();
         var_dump($a->getAllImages());
