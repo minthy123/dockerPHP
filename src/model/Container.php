@@ -9,6 +9,7 @@
 		private $created;
 		private $state;
 		private $status;
+		private $command;
 
 		private $image;
 
@@ -26,6 +27,7 @@
 			$instance->setId($obj['Id']);
 			$instance->setStatus($obj['Status']);
 			$instance->setState($obj['State']);
+			$instance->setCommand($obj['Command']);
 
 			//image
 			$image = new Image();
@@ -73,6 +75,14 @@
 
 		public function getStatus() {
 			return $this->status;
+		}
+
+		public function setCommand($status) {
+			$this->status = $command;
+		}
+
+		public function getCommand() {
+			return $this->command;
 		}
 
 		public function setState($state) {

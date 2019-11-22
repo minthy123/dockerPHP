@@ -1,6 +1,6 @@
 <?php 
     include_once('Database.php');
-    include_once('../entity/LibraryEntity.php');
+    include_once('/var/www/html/src/entity/LibraryEntity.php');
 
     class LibraryDao{
        

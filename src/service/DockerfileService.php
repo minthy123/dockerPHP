@@ -1,8 +1,9 @@
 <?php
     include_once('LibraryService.php');
-    include_once('../model/Dockerfile.php');
+    include_once ('/var/www/html/src/enum/Instruction.php');
+    include_once ('/var/www/html/src/model/Dockerfile.php');
+
     class DockerfileService {
-        
         private $libraryService;
 
         function __construct(){
@@ -17,74 +18,75 @@
                 }               
             }
 
-
             return self::mergeCommands($commands);
-        }
-
-        private static function convertCommandToDockerfile($commands) {
-            $result = "";
-            foreach ($commands as $command) {
-                $result .= $command->getDockerInstruction() . " " . $command->getCmd() . "\n";               
-            }
-
-            return $result;
         }
 
         private function mergeCommands($commands) {
             $dockerfile = new Dockerfile();
-            $cmd = new CommandEntity(0, "CMD", "", 0);
-            $expose = new CommandEntity(0, "EXPOSE", "", 0);
-            $runs = [];
 
             foreach ($commands as $command) {
-                if ($command->getDockerInstruction() == "CMD") {
-                    $cmd->setCmd($cmd->getCmd().'|'.$command->getCmd());
-                } else if ($command->getDockerInstruction() == "EXPOSE") {
-                    $cmd->expose($cmd->getCmd().' '.$command->getCmd());
-                } else if ($command->getDockerInstruction() == "FROM"){
-                    $dockerfile->setFrom($command);
-                } else {
-                    array_push($runs, $command);
+                switch ($command->getDockerInstruction()) {
+                    case Instruction::CMD:
+                        $dockerfile->addCommand($command->getCmd());
+                        break;
+
+                    case Instruction::EXPOSE:
+                        $dockerfile->addEnv($command);
+                        break;
+
+                    case Instruction::FROM:
+                        $dockerfile->setFrom($command);
+                        break;
+
+                    default:
+                        $dockerfile->addRun($command);
+                        break;
                 }
             }
 
-            if ($expose->getCmd() != "") { 
-                $dockerfile->setExpose($expose);
-            }
-
-            if ($cmd->getCmd() != "") {
-                $dockerfile->setCmd($cmd);
-            }
-
-            $dockerfile->setRuns($runs);
+            $dockerfile->addCommand("tail -f /dev/null");
 
             $this->saveDockerfile($dockerfile->toString(false), 'dockerfile');
-
             return $dockerfile;
         }
 
         function saveDockerfile($content, $filename) {
+            $filename = "/tmp/" . $filename;
+            self::saveFile($content, $filename);
+        }
+        
+        function createDockerfile($osId, $libraryIds) {
+            $isGPU = false;
+            $libraries = $this->libraryService->getLibrariesFromOS($osId, $libraryIds, $isGPU);
+
+            $dockerfile = $this->createCommand($libraries);
+            $dockerfile->setIsGPU($isGPU);
+
+            return $dockerfile;
+        }
+
+        function uploadFileToDockerfile($dockerfile, $fileUpload) {
+            $filename = "/tmp/". $fileUpload['name'];
+            $this->saveFile($fileUpload['tmp_name'], $filename);
+
+            $dockerfile->setPathToFile($filename);
+        }
+
+        private function saveFile($content, $filename) {
             try {
-                $filename = "/tmp/" . $filename;
                 if(!file_exists($filename)){
                     touch($filename);
                     chmod($filename, 0777);
                 }
 
-                $dockerfile1 = fopen($filename, "w") or die("Unable to open file!");
+                $dockerfile = fopen($filename, "w") or die("Unable to open file!");
 
+                fwrite($dockerfile, $content);
+                fclose($dockerfile);
 
-                fwrite($dockerfile1, $content);
-                fclose($dockerfile1);
             } catch (Exception $e) {
                 echo 'Caught exception: ',  $e->getMessage(), "\n";
             }
-        }
-        
-        function createDockerfile($libraryIds) {
-            $libraries = $this->libraryService->getLibraries($libraryIds);
-
-            return $this->createCommand($libraries);
         }
     }
 ?>

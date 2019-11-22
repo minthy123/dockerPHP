@@ -14,7 +14,7 @@
 
         	$instance->setName($obj['RepoTags'][0]);
 			$instance->setSize($obj['Size']);
-			$instance->setId($obj['Id']);
+			$instance->setId(str_replace("sha256:", "", $obj['Id']));
         	return $instance;
 		}
 
@@ -48,6 +48,14 @@
 
 		public function getSize() {
 			return $this->size;
+		}
+
+		public function setCreated($created) {
+			$this->created = $created;
+		}
+
+		public function getCreated() {
+			return $this->created;
 		}
 	}
 

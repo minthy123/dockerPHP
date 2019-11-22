@@ -1,6 +1,6 @@
 <?php 
     include_once('Database.php');
-    include_once('../entity/DependenceEntity.php');
+    include_once('/var/www/html/src/entity/DependenceEntity.php');
 
     class DependenceDao{
         

@@ -1,59 +1,29 @@
 <?php
 
-    require_once('../restclient/CommandExecution.php');
     class DockerBuildService {
-        static private $DOCKER_BUILD_COMMAND="docker build --rm -t <image_name> -f <dockerfile_name> .";
+        static private $DOCKER_BUILD_COMMAND="docker build --rm --no-cache -t <image_name> -f <dockerfile_name> .";
 
         private $buildCommand;
 
         function __construct() {
         }
 
-        function handleName() {
-            return "test_image";
+        function handleName($imageName) {
+            return $imageName == null ? "test_image" : $imageName;
         }
 
         function handleDockerfileName() {
             return "/tmp/dockerfile";
         }
 
-        function generateDockerBuildCommand(){
-            $result =  self::$DOCKER_BUILD_COMMAND;
-            $result = str_replace("<image_name>", $this->handleName(), $result); 
-            $result = str_replace("<dockerfile_name>", $this->handleDockerfileName(), $result); 
+        function generateDockerBuildCommand($dockerfile)
+        {
+            $result = self::$DOCKER_BUILD_COMMAND;
+            $result = str_replace("<image_name>", $this->handleName($dockerfile->getImageName()), $result);
+            $result = str_replace("<dockerfile_name>", $this->handleDockerfileName(), $result);
             $this->buildCommand = $result;
             return $result;
         }
-
-        function excuteCommand($dockerfile) {
-            $commandExecution = new CommandExecution();
-            $this->saveDockerfile($dockerfile->toString(false), 'dockerfile');
-
-            echo $commandExecution->execute($this->buildCommand);
-        }
-
-        function saveDockerfile($content, $filename) {
-            try {
-                $filename = "/tmp/" . $filename;
-                if(!file_exists($filename)){
-                    touch($filename);
-                    chmod($filename, 0777);
-                }
-
-                $dockerfile1 = fopen($filename, "w") or die("Unable to open file!");
-
-
-                fwrite($dockerfile1, $content);
-                fclose($dockerfile1);
-            } catch (Exception $e) {
-                echo 'Caught exception: ',  $e->getMessage(), "\n";
-            }
-        }
-    }
-
-    if (isset($_POST['dockerfile'])) {
-        $dockerBuildService = new DockerBuildService();
-        $dockerBuildService->excuteCommand($_POST['dockerfile']);
     }
 
 

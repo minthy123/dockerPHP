@@ -1,8 +1,8 @@
 <?php
-    include_once('../dao/LibraryDao.php');
-    include_once('../dao/CommandDao.php');
-    include_once('../dao/DependenceDao.php');
-    include_once('../model/OsAndLibraries.php');
+    include_once('/var/www/html/src/dao/LibraryDao.php');
+    include_once('/var/www/html/src/dao/CommandDao.php');
+    include_once('/var/www/html/src/dao/DependenceDao.php');
+    include_once('/var/www/html/src/model/OsAndLibraries.php');
     
     class LibraryService {
         
@@ -19,6 +19,7 @@
         private function mapCommandAndLibrary($libraries, $commands) {
             foreach ($libraries as $library) {
                 $library->setCommands(Array());
+
                 foreach ($commands as $command) {
                     if ($command->getLibraryId() == $library->getId()) {
                         $library->addCommand($command);
@@ -27,41 +28,70 @@
             }
         }
 
-        // public function getLibraries($inputLibraryIds) {
-        //     $libraryIds = $this->loadAllDependentLibraryId($inputLibraryIds);
-            
-        //     $librariesInDB = $this->libraryDao->getAll();
-                        
-        //     $libraries = Array();
-        //     foreach ($librariesInDB as $tmp) {
-        //         if (in_array($tmp->getId(), $libraryIds)) {
-        //             array_push($libraries, $tmp);
-        //         }
-        //     }
-            
-        //     $commands = $this->commandDao->getAll();
-            
-        //     $this->mapCommandAndLibrary($libraries, $commands);
-
-        //     return $libraries;
-        // }
-
-        public function getLibrariesFromOS($osId, $inputLibraryIds) {
+        public function getLibrariesFromOS($osId, $inputLibraryIds, &$isGPU) {
             $dependences = $this->dependenceDao->getAll();
             $libraryMapByIds = $this->getLibrariesMapById();
             
             $osAndLibraries = self::getOsAndLibraries($osId, $libraryMapByIds, $dependences);
 
-            $libraryIds = $this->loadAllDependentLibraryId1($osAndLibraries, $libraryIds, $dependences);
+            $allowanceLibraryIds = [];
+            foreach ($osAndLibraries->getLibraries() as $lib) {
+                array_push($allowanceLibraryIds, $lib->getId());
+            }
+
+            $libraryIds = $this->loadAllDependentLibraryId($allowanceLibraryIds, $inputLibraryIds, $dependences);
+
+            array_push($libraryIds, $osId);
+            
+            $libraryIds = array_reverse($libraryIds);
             $libraries = self::getLibrariesFromId($libraryMapByIds, $libraryIds);
             
             $commands = $this->commandDao->getAll();
             $this->mapCommandAndLibrary($libraries, $commands);
 
+            $isGPU =  $libraryMapByIds[$osId]->getIsGPU();
+
             return $libraries;
         }
 
-        private static function loadAllDependentLibraryId1($allowenceLibraryIds, $libraryIds, $dependences) {
+        private static function removeDependences($allowanceLibraryIds, $dependences) : array {
+            $result = [];
+            foreach ($dependences as $dependence) {
+                if (!in_array($dependence->getLibraryId(), $allowanceLibraryIds) && !in_array($dependence->getParentLibraryId(), $allowanceLibraryIds)) 
+                    array_push($result, $dependence);
+            }
+
+            return $result;
+        }
+
+        private static function loadAllDependentLibrary($inputLibraryIds, $dependences) {
+            $stack = $inputLibraryIds;
+
+            $checked = [];
+
+            while (!empty($stack)) {
+                $libId = array_pop($stack);
+
+                foreach ($dependences as $dependence) {
+                    if ($dependence->getLibraryId() != $libId || $checked[$dependence->getParentLibraryId()]) continue;
+
+                    $checked[$dependence->getParentLibraryId()] = true;
+                    array_push($stack, $dependence->getParentLibraryId());
+                }
+            }
+        }
+
+        private static function getDependent($libId, $dependences, $d) {
+            foreach ($dependences as $dependence) {
+                if ($dependence->getLibraryId() != $libId || $checked[$dependence->getParentLibraryId()]) continue;
+
+                $checked[$dependence->getParentLibraryId()] = true;
+                
+                array_push($stack, $dependence->getParentLibraryId());
+            }
+        }
+
+        private static function loadAllDependentLibraryId($allowenceLibraryIds, $libraryIds, $dependences) {
 
             // queue
             $queue = $libraryIds;
@@ -70,12 +100,12 @@
 
             $result = Array();
 
-            while ($top < $sizeOfQueue + 1) {
+            while ($top < $sizeOfQueue) {
                 // pop que
                 $libId=$queue[$top];
                 $top++;
 
-                if (in_array($libId, $result) && !in_array($libId, $allowenceLibraryIds)) {
+                if (in_array($libId, $result) || !in_array($libId, $allowenceLibraryIds)) {
                     continue;
                 }
 
@@ -95,43 +125,6 @@
 
             return $result;
         }
-
-        // private function loadAllDependentLibraryId($libraryIds) {
-
-        //     // queue
-        //     $queue = $libraryIds;
-        //     $top=0;
-        //     $sizeOfQueue=count($libraryIds); 
-
-        //     $result = Array();
-
-        //     $dependences = $this->dependenceDao->getAll();
-
-        //     while ($top < $sizeOfQueue + 1) {
-        //         // pop que
-        //         $libId=$queue[$top];
-        //         $top++;
-
-        //         if (in_array($libId, $result)) {
-        //             continue;
-        //         }
-
-        //         array_push($result, $libId);
-               
-        //         foreach ($dependences as $de) {
-        //             if ($de->getLibraryId() != $libId) {
-        //                 continue;
-        //             }
-
-        //             //push to queue
-        //             array_push($queue, $de->getParentLibraryId());
-        //             $sizeOfQueue++;
-        //         }
-
-        //     }
-
-        //     return $result;
-        // }
 
         public function getLibrariesMapById() {
             $librariesInDB = $this->libraryDao->getAll();
@@ -169,7 +162,6 @@
 
         private static function getOsAndLibraries($osId, $libraryMapByIds, $dependences) {
             $libraryIdsOfOS = self::getAllLibrariesOfOS($osId, $dependences, $libraryMapByIds);
-
             $librariesOfOS = self::getLibrariesFromId($libraryMapByIds, $libraryIdsOfOS);
 
             return new OSAndLibraries($libraryMapByIds[$osId], $librariesOfOS);
@@ -201,10 +193,11 @@
 
             $isGPU = $libraryMapByIds[$osId]->getIsGPU();
 
-            while ($top < $sizeOfQueue + 1) {
+            while ($top < $sizeOfQueue) {
                 // pop que
                 $libId=$queue[$top];
                 $top++;
+
 
                 if (in_array($libId, $result) || (!$isGPU && $libraryMapByIds[$libId]->getIsGPU())) {
                     continue;
@@ -213,7 +206,7 @@
                 array_push($result, $libId);
                
                 foreach ($dependences as $de) {
-                    if ($de->getParentLibraryId() != $libId) {
+                    if ($de->getParentLibraryId() != $libId || in_array($de->getLibraryId(), $queue)) {
                         continue;
                     }
 
@@ -224,9 +217,10 @@
 
             }
 
-            return $result;
-        }   
+            $key = array_search($osId, $result);
+            unset($result[$key]);
 
-        
+            return $result;
+        }
     }
 ?>

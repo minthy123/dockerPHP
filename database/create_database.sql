@@ -10,7 +10,7 @@ CREATE TABLE IF NOT EXISTS command (
     cmd TEXT NOT NULL,
     library_id INTEGER NOT NULL,
     FOREIGN KEY(library_id) REFERENCES library(id)
-)
+);
 
 CREATE TABLE IF NOT EXISTS dependence (
     library_id INTEGER NOT NULL,

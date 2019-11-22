@@ -1,8 +1,8 @@
 <?php
-    require_once('../entity/CommandEntity.php');
+    require_once('/var/www/html/src/entity/CommandEntity.php');
 
     class DockerRunService {
-        private static $DOCKER_RUN_COMMAND="docker run --rm --name <container_name> <port> <image_name>";
+        const DOCKER_RUN_COMMAND="docker run --rm --name <container_name> <port> <gpu> <image_name>";
 
         function __construct() {
             //no construct
@@ -32,8 +32,8 @@
             return "test_container";
         }
 
-        function handleImageName() {
-            return "test_image";
+        function handleImageName($imageName) {
+            return $imageName == null ? "test_image" : $imageName;
         }
 
         function generateDockerRunCommand(){
@@ -45,11 +45,14 @@
             return $result;
         }
 
-        function createDockerRunFromCommands($dockerfile) {
-            $result = self::$DOCKER_RUN_COMMAND;
+        function createDockerRunFromCommands($dockerfile) : string {
+            $result = self::DOCKER_RUN_COMMAND;
             $result = str_replace("<container_name>", $this->handleContainerName(), $result); 
             $result = str_replace("<port>", $this->handlePort($dockerfile->getExpose(), false), $result); 
-            $result = str_replace("<image_name>", $this->handleImageName(), $result); 
+            $result = str_replace("<image_name>", $this->handleImageName($dockerfile->getImageName()), $result); 
+            
+            $gpu = $dockerfile->getIsGPU() ? "--gpus all " : " "; 
+            $result = str_replace("<gpu> ", $gpu, $result);
             
             return $result;
         }
