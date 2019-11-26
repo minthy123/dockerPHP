@@ -5,7 +5,6 @@
 		private const URL = "http://v1.24%s";
 	    
 	    private $curlClient;
-	    private $socketPath;
 	    private $curlError = null;
 
 	    public function __construct() {
@@ -22,14 +21,14 @@
 	        return sprintf(self::URL, $requestPath);
 	    }
 	    
-	    public function dispatchCommand(string $endpoint, array $parameters = null): array {
+	    public function dispatchCommand(string $endpoint, array $parameters = null) {
 	        curl_setopt($this->curlClient, CURLOPT_URL, $this->generateRequestUri($endpoint));
-	        
+
 	        if (!is_null($parameters)) {
 	          $payload = json_encode($parameters);
 	          curl_setopt($this->curlClient, CURLOPT_POSTFIELDS, $payload);          
 	        }
-	        
+
 	        $result = curl_exec($this->curlClient);
 	        if ($result === FALSE) {
 	            $this->curlError = curl_error($this->curlClient);
@@ -44,7 +43,6 @@
 	        curl_setopt($this->curlClient, CURLOPT_CUSTOMREQUEST, "POST");
 	        
 			$result = curl_exec($this->curlClient);
-			//var_dump($result);
 
 	        if ($result === FALSE) {
 	            $this->curlError = curl_error($this->curlClient);
@@ -59,7 +57,6 @@
 	        curl_setopt($this->curlClient, CURLOPT_CUSTOMREQUEST, "DELETE");
 			
 			$result = curl_exec($this->curlClient);
-			//var_dump($result);
 	        if ($result === FALSE) {
 	            $this->curlError = curl_error($this->curlClient);
 	            return array();
@@ -70,10 +67,6 @@
 	    
 	    public function getCurlError() {
 	        return is_null($this->curlError) ? false : $this->curlError;
-	    }
-
-	    public function getAllImage() {
-	    	return $this->dispatchCommand('/images/json');
 	    }
 	}
 ?>

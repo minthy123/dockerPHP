@@ -69,6 +69,7 @@
 
             $checked = [];
 
+        
             while (!empty($stack)) {
                 $libId = array_pop($stack);
 

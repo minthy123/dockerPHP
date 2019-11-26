@@ -7,12 +7,28 @@
 		private $id;
 		private $name;
 		private $created;
-		private $state;
-		private $status;
 		private $command;
 
-		private $image;
+		private $hostnamePath;
+		private $hostsPath;
+		private $logPath;
+		private $restartCount;
+		private $platform;
+		private $driver;
+		private $path;
 
+        private $state;
+        private $status;
+        private $startedAt;
+        private $finishedAt;
+
+        private $env;
+        private $workingDir;
+        private $entryPoint;
+
+		private $mount;
+
+		private $image;
 		private $ports;
 
 		public function __construct() {
@@ -45,6 +61,39 @@
 			return $instance;
 		}
 
+        public static function fromJSONDetail($obj) {
+            $instance = new self();
+            $image = new Image();
+            $instance->setImage($image);
+
+            //container
+            $instance->setName($obj['Name']);
+            $instance->setId($obj['Id']);
+            $image->setId($obj['Image']);
+            $instance->setRestartCount($obj['RestartCount']);
+            $instance->setCommand($obj['Command']);
+            $instance->setCreated($obj['Created']);
+            $instance->setHostnamePath($obj['HostnamePath']);
+            $instance->setHostsPath($obj['HostsPath']);
+            $instance->setLogPath($obj['LogPath']);
+            $instance->setPlatform($obj['Platform']);
+            $instance->setDriver($obj['Driver']);
+            $instance->setPath($obj['Path']);
+
+             //state
+            $instance->setStatus($obj['State']['Status']);
+            $instance->setStartedAt($obj['State']['StartedAt']);
+            $instance->setFinishedAt($obj['State']['FinishedAt']);
+
+            //config
+            $image->setName($obj['Config']['Image']);
+            $instance->setEnv($obj['Config']['Env']);
+            $instance->setWorkingDir($obj['Config']['WorkingDir']);
+            $instance->setEntryPoint($obj['Config']['Entrypoint']);
+
+            return $instance;
+        }
+
 		public function getName() {
 			return $this->name;
 		}
@@ -53,13 +102,13 @@
 			$this->name = $name;
 		}
 
-		public function setTag($tag) {
-			$this->tag = $tag;
-		}
+		public function setRestartCount($restartCount) {
+		    $this->restartCount = $restartCount;
+        }
 
-		public function getTag() {
-			return $this->tag;
-		}
+        public function getRestartCount() {
+            return $this->restartCount;
+        }
 
 		public function setId($id) {
 			$this->id = $id;
@@ -77,8 +126,16 @@
 			return $this->status;
 		}
 
-		public function setCommand($status) {
-			$this->status = $command;
+        public function setCreated($created) {
+            $this->created = $created;
+        }
+
+        public function getCreated() {
+            return $this->created;
+        }
+
+		public function setCommand($command) {
+			$this->command = $command;
 		}
 
 		public function getCommand() {
@@ -108,6 +165,202 @@
 		public function getPorts() {
 			return $this->ports;
 		}
+
+        /**
+         * @return mixed
+         */
+        public function getHostnamePath()
+        {
+            return $this->hostnamePath;
+        }
+
+        /**
+         * @param mixed $hostnamePath
+         */
+        public function setHostnamePath($hostnamePath): void
+        {
+            $this->hostnamePath = $hostnamePath;
+        }
+
+        /**
+         * @return mixed
+         */
+        public function getHostsPath()
+        {
+            return $this->hostsPath;
+        }
+
+        /**
+         * @param mixed $hostsPath
+         */
+        public function setHostsPath($hostsPath): void
+        {
+            $this->hostsPath = $hostsPath;
+        }
+
+        /**
+         * @return mixed
+         */
+        public function getLogPath()
+        {
+            return $this->logPath;
+        }
+
+        /**
+         * @param mixed $logPath
+         */
+        public function setLogPath($logPath): void
+        {
+            $this->logPath = $logPath;
+        }
+
+        /**
+         * @return mixed
+         */
+        public function getPlatform()
+        {
+            return $this->platform;
+        }
+
+        /**
+         * @param mixed $platform
+         */
+        public function setPlatform($platform): void
+        {
+            $this->platform = $platform;
+        }
+
+        /**
+         * @return mixed
+         */
+        public function getDriver()
+        {
+            return $this->driver;
+        }
+
+        /**
+         * @param mixed $driver
+         */
+        public function setDriver($driver): void
+        {
+            $this->driver = $driver;
+        }
+
+        /**
+         * @return mixed
+         */
+        public function getPath()
+        {
+            return $this->path;
+        }
+
+        /**
+         * @param mixed $path
+         */
+        public function setPath($path): void
+        {
+            $this->path = $path;
+        }
+
+        /**
+         * @return mixed
+         */
+        public function getMount()
+        {
+            return $this->mount;
+        }
+
+        /**
+         * @param mixed $mount
+         */
+        public function setMount($mount): void
+        {
+            $this->mount = $mount;
+        }
+
+        /**
+         * @return mixed
+         */
+        public function getStartedAt()
+        {
+            return $this->startedAt;
+        }
+
+        /**
+         * @param mixed $startedAt
+         */
+        public function setStartedAt($startedAt): void
+        {
+            $this->startedAt = $startedAt;
+        }
+
+        /**
+         * @return mixed
+         */
+        public function getFinishedAt()
+        {
+            return $this->finishedAt;
+        }
+
+        /**
+         * @param mixed $finishedAt
+         */
+        public function setFinishedAt($finishedAt): void
+        {
+            $this->finishedAt = $finishedAt;
+        }
+
+        /**
+         * @return mixed
+         */
+        public function getEnv()
+        {
+            return $this->env;
+        }
+
+        /**
+         * @param mixed $env
+         */
+        public function setEnv($env): void
+        {
+            $this->env = $env;
+        }
+
+        /**
+         * @return mixed
+         */
+        public function getWorkingDir()
+        {
+            return $this->workingDir;
+        }
+
+        /**
+         * @param mixed $workingDir
+         */
+        public function setWorkingDir($workingDir): void
+        {
+            $this->workingDir = $workingDir;
+        }
+
+        /**
+         * @return mixed
+         */
+        public function getEntryPoint()
+        {
+            return $this->entryPoint;
+        }
+
+        /**
+         * @param mixed $entryPoint
+         */
+        public function setEntryPoint($entryPoint): void
+        {
+            $this->entryPoint = $entryPoint;
+        }
+
+        public function isRunning(){
+            return $this->status == "running";
+        }
 	}
 
 ?>

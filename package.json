@@ -1,9 +1,0 @@
-{
-  "name": "dockerPHP",
-  "version": "1.0.0",
-  "dependencies": {
-
-  },
-  "upload_folder": "/tmp",
-  "dockerfile_folder": "/tmp"
-}

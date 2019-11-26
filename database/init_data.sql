@@ -54,4 +54,6 @@ INSERT INTO dependence(library_id, parent_library_id) VALUES
 (15, 13),
 (14, 15),
 (6, 15),
-(10, 13);
+(10, 13),
+(16, 2),
+(17, 2);

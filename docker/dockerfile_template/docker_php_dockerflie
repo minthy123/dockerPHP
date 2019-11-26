@@ -22,6 +22,10 @@ RUN add-apt-repository \
 RUN apt-get update -y 
 RUN apt-get install -y docker-ce
 
+#### install node js
+RUN curl -sL https://deb.nodesource.com/setup_13.x | bash -
+RUN apt-get install -y nodejs
+
 ##### go lang to install gotty #####
 RUN apt-get update && apt-get -y dist-upgrade
 RUN apt-get install -y golang git
@@ -31,9 +35,6 @@ RUN mkdir $GOPATH
 ENV PATH $GOPATH/bin:$PATH
 
 #### gotty #######
-# This lib is used for web terminal application
-# default port 8080
-# can access localhost:8080 to excute
 RUN go get github.com/yudai/gotty
 
 ##########
@@ -48,7 +49,6 @@ RUN a2enmod rewrite
 RUN sed -i "s/short_open_tag = Off/short_open_tag = On/" /etc/php/7.2/apache2/php.ini
 RUN sed -i "s/error_reporting = .*$/error_reporting = E_ERROR | E_WARNING | E_PARSE/" /etc/php/7.2/apache2/php.ini
 
-RUN groupadd docker
 RUN usermod -aG docker www-data
 RUN newgrp docker 
 
@@ -59,6 +59,6 @@ ENV APACHE_LOCK_DIR /var/lock/apache2
 ENV APACHE_PID_FILE /var/run/apache2.pid
 
 # Expose apache.
-EXPOSE 80, 8080
+EXPOSE 80 8080 3000
 
 CMD gotty -w /bin/bash | /usr/sbin/apache2ctl -D FOREGROUND | tail -f /dev/null 

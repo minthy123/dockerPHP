@@ -6,7 +6,7 @@
 		$GLOBALS['dockerfile'] = $dockerfileService->createDockerfile($_POST['os-id'], $_POST['library-ids']);
 		
 		if (isset($_POST['image-name'])) {
-			$GLOBALS['dockerfile']->setImageName($_GET['image-name']);
+			$GLOBALS['dockerfile']->setImageName($_POST['image-name']);
 		}
 
 		if (isset($_POST['command-input']) && !empty($_POST['command-input'])) {
@@ -49,16 +49,8 @@
 <div id='build-docker-log'>
 </div>
 
-<script type="text/javascript">
-	$('#button-build-image').click(function() {
-		$.post('/src/restclient/CommandExecution.php', {cmd : $('#build-command').text()})
-			.done(function(data) {
-				$('#build-docker-log').append(data);
-			});
-	    console.log('Request Sent');
-	});
+<script type="module" src="build.js">
 </script>
-
 
 <div class="dockerrun">
 	<?php

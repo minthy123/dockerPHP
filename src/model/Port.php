@@ -9,7 +9,7 @@
 			// no-contruct
 		}
 
-		public function fromJSONObject($obj) {
+		public static function fromJSONObject($obj) {
 			$instance = new self();
 			$instance->setIP($obj["IP"]);
 			$instance->setPrivatePort($obj["PrivatePort"]);

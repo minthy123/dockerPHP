@@ -5,8 +5,9 @@
     class ImageClient {
         private $dockerClient;
 
-        const KILL_IMAGE_COMMAND = '/images/%s';
-        const LIST_ALL_IMAGES = '/images/json';
+        private const KILL_IMAGE_COMMAND = '/images/%s';
+        private const LIST_ALL_IMAGES = '/images/json';
+        private const IMAGE_INFO = '/images/%s/json';
 
         public function __construct() {
             $this->dockerClient = new DockerClient();
@@ -20,6 +21,13 @@
             }
 
             return $result;
+        }
+
+        public function getImageInfo($imageId) {
+            $json = $this->dockerClient->dispatchCommand(
+                sprintf(self::IMAGE_INFO, $imageId));
+
+            return Image::fromJSONDetail($json);
         }
 
         public function deleteImage($id) {

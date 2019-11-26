@@ -8,7 +8,7 @@
         const RESTART_CONTAINER_COMMAND = '/containers/%s/restart?t=5';
         const KILL_CONTAINER_COMMAND = '/containers/%s/kill';
         const LIST_ALL_CONTAINERS = '/containers/json?all=1';
-
+        const CONTAINER_INFO = '/containers/%s/json';
 
         private $dockerClient;
 
@@ -50,13 +50,34 @@
         private static function replaceContainerId($command, $containerId){
             return sprintf($command, $containerId);
         }
-	
+
+        public function getContainerInfo($id) {
+            $json = $this->dockerClient->dispatchCommand(
+                $this->replaceContainerId(self::CONTAINER_INFO, $id));
+
+            if ($this->dockerClient->getCurlError() === false) {
+                return Container::fromJSONDetail($json);
+            } else {
+                return null;
+            }
+        }
+
+        public function getError() {
+            return $this->dockerClient->getCurlError();
+        }
+
     }
 
     if (isset($_GET['container-id'])) {
         $containerClient = new ContainerClient();
 
         switch ($_GET['operation']) {
+            case 'CHECK' :
+                include_once ("CommandExecution.php");
+                $commandExecution = new CommandExecution();
+                $commandExecution->execute("docker logs -f " .$_GET['container-id']);
+                break;
+
             case 'DELETE' :
                 $containerClient->killContainer($_GET['container-id']);
                 break;

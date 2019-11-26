@@ -32,16 +32,16 @@
 |        | + UI for dockerfile                                      |  Done  |
 |        | + UI for docker commands                                 |  Done  |
 |        |                                                          |        |
-| Week 4 | UI for managing container, image                         |        |
+| Week 4 | UI for managing container, image                         |  Done  |
 |        | + Button to excute docker commands                       |  Done  |
 |        | + UI for choosing lib                                    |  Done  |
 |        | + UI for list of docker image, containers                |  Done  |
-|        | + UI for container detail                                |        |
+|        | + UI for container detail                                |  Done  |
 |        | + Button to interact with image, container               |  Done  |
-|        | + UI for docker logs                                     |        |
+|        | + UI for docker logs                                     |  Done  |
 |        |                                                          |        |
 | Week 5 | UI and library management                                |        |
-|        | + UI for terminal                                        |        |
+|        | + UI for terminal                                        |  Done  |
 |        | + UI for uploading file                                  |  Done  |
 |        | + Create, update lib                                     |        |
 |        | + UI to manage lib                                       |        |

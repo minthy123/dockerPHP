@@ -94,8 +94,7 @@
 
                 foreach ($images as $image) {
                   echo "<tr>\n";
-                  echo "<td><a data-toggle=\"tooltip\" data-placement=\"top\" title='". $image->getId() ."' href=\"./image.html?imageid\">". substr($image->getId(), 0, 12)."</a></td>\n";
-
+                  echo "<td><a data-toggle=\"tooltip\" data-placement=\"top\" title='". $image->getId() ."' href=\"./image.php?image-id=".$image->getId()."\">". substr($image->getId(), 0, 12)."</a></td>\n";
 
                   echo "<td data-toggle=\"tooltip\" data-placement=\"top\" title=\"". $image->getName() ."\">".substr($image->getName(), 0, 20)."</td>\n";
                   echo "<td>".$image->getTag()."</td>\n";

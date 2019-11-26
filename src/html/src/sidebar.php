@@ -6,33 +6,33 @@
     </div>
     <div class="sidebar-wrapper">
       <ul class="nav">
-        <li class="nav-item <?php if ($GLOBALS['toogle'] == 'dashboard') echo "active"; else ""; ?>">
+        <li class="nav-item <?php if ($GLOBALS['toogle'] == 'dashboard') echo "active"; ?>">
           <a class="nav-link" href="./dashboard.php">
             <i class="material-icons">dashboard</i>
             <p>Dashboard</p>
           </a>
         </li>
-        <li class="nav-item <?php if ($GLOBALS['toogle'] == 'dockerfile') echo "active"; else ""; ?>">
+        <li class="nav-item <?php if ($GLOBALS['toogle'] == 'dockerfile') echo "active"; ?>">
             <a class="nav-link" href="./dockerfile.php">
               <i class="material-icons">create</i>
               <p>Create new dockerfile</p>
             </a>
           </li>
-        <li class="nav-item <?php if ($GLOBALS['toogle'] == 'containers') echo "active"; else ""; ?>">
+        <li class="nav-item <?php if ($GLOBALS['toogle'] == 'containers') echo "active"; ?>">
           <a class="nav-link" href="./containers.php">
             <i class="material-icons">person</i>
             <p>Containers</p>
           </a>
         </li>
-        <li class="nav-item <?php if ($GLOBALS['toogle'] == 'images') echo "active"; else ""; ?>">
+        <li class="nav-item <?php if ($GLOBALS['toogle'] == 'images') echo "active"; ?>">
           <a class="nav-link" href="./images.php">
             <i class="material-icons">content_paste</i>
             <p>Images</p>
           </a>
         </li>
 
-        <li class="nav-item">
-          <a class="nav-link" href="<?php echo "http://".$_SERVER['SERVER_NAME'].":32768" ?>">
+        <li class="nav-item <?php if ($GLOBALS['toogle'] == 'terminal') echo "active"; ?>">
+          <a class="nav-link" href="./Terminal.php">
             <i class="material-icons">content_paste</i>
             <p>Terminal</p>
           </a>
