@@ -32,12 +32,22 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
   <!-- CSS Files -->
   <link href="../assets/css/material-dashboard.css?v=2.1.1" rel="stylesheet" />
-  <!-- CSS Just for demo purpose, don't include it in your project -->
-    <link href="../assets/demo/demo.css" rel="stylesheet" />
     <link rel="stylesheet" href="../node_modules/xterm/dist/xterm.css" />
     <script src="../node_modules/xterm/dist/xterm.js"></script>
     <script src="../node_modules/xterm/dist/addons/fit/fit.js"></script>
-  <?php include_once('script.html'); ?>
+
+    <?php include_once('script.html'); ?>
+<!--    <link rel="stylesheet" href="../assets/css/docs.min.css"/>-->
+    <link rel="stylesheet"
+          href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.16.2/build/styles/default.min.css">
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.16.2/build/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+<!--    <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>-->
+<!--    <link-->
+<!--            rel="stylesheet"-->
+<!--            href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.5.0/themes/prism.min.css"-->
+<!--    />-->
+
 </head>
 
 <body class="">
@@ -76,9 +86,8 @@
         <div class="container-fluid">
         <!-- Main content -->
           <?php
-            include_once('DockerfileGeneration.php');
+            include_once('dockerfile/DockerfileGeneration.php');
           ?>
-
         </div>
       </div>
       <footer class="footer">

@@ -20,6 +20,23 @@
             return $result;
         }
 
+        function addLibrary(LibraryEntity $library) {
+            $db = new Database();
+            $sqlQuery = "INSERT INTO library (name, isGPU) VALUES (:name, :isGPU)";
+
+            $db->exec($sqlQuery);
+            $stmt = $db->prepare($sqlQuery);
+            $stmt->bindValue(":name", $library->getName());
+            $stmt->bindValue(":isGPU", $library->getIsGPU());
+
+            $stmt->execute();
+
+            $lastInsertId = $db->lastInsertRowID();
+
+            $db->close();
+            return $lastInsertId;
+        }
+
         // function getByLibraryIds($libraryIds) {
         //     $db = new Database();
         //     $sqlQuery = "SELECT * FROM library WHERE id in :libraryIds";  

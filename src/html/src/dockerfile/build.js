@@ -1,17 +1,13 @@
-$('#button-build-image').click(function() {
-    // $.post('/src/restclient/CommandExecution.php', {cmd : $('#build-command').text()})
-    // 	.done(function(data) {
-    // 		$('#build-docker-log').append(data);
-    // 	});
-    // console.log('Request Sent');
-    //Terminal.applyAddon(winptyCompat);
-
+$('#button-build-image').click(function(e) {
+    e.preventDefault();
+    
+    if($(this).hasClass('processing')) 
+        return; 
+    
+    $(this).addClass('processing') ;
+    
     Terminal.applyAddon(fit);
-
-    // The terminal
     const term = new Terminal({ windowsMode: true });
-
-    // This kinda makes sense
     const container = document.getElementById('build-docker-log');
     term.open(container);
     term.fit();
@@ -33,6 +29,7 @@ $('#button-build-image').click(function() {
                     progressResponse = response.substring(lastResponseLength);
                     lastResponseLength = response.length;
                 }
+
                 term.write(progressResponse);
             }
         }

@@ -10,13 +10,14 @@
 		private $isGPU;
 		private $imageName;
 
-		private $pathToFile;
+		private $uploadFilePath;
+		private $dockerfilePath;
 
 		function __construct() {
             $this->runs = [];
             $this->expose = [];
             $this->cmd = new CommandEntity(0, Instruction::CMD, self::EMPTY_STRING, 0);
-            $this->pathToFile = null;
+            $this->uploadFilePath = null;
 		}
 
         function setFrom($from){
@@ -35,12 +36,12 @@
 			return $this->runs;
 		}
 
-        function setPathToFile($pathToFile) {
-            $this->pathToFile = $pathToFile;
+        function setUploadFilePath($uploadFilePath) {
+            $this->uploadFilePath = $uploadFilePath;
         }
 
-        function getPathToFile() {
-            return $this->pathToFile;
+        function getUploadFilePath() {
+            return $this->uploadFilePath;
         }
 
 		function setExpose($expose){
@@ -95,6 +96,22 @@
             array_push($this->expose, $command);
         }
 
+        /**
+         * @return mixed
+         */
+        public function getDockerfilePath()
+        {
+            return $this->dockerfilePath;
+        }
+
+        /**
+         * @param mixed $dockerfilePath
+         */
+        public function setDockerfilePath($dockerfilePath): void
+        {
+            $this->dockerfilePath = $dockerfilePath;
+        }
+
 		function toString($forHTML) {
             $endline = $forHTML ? '<br>' : PHP_EOL;
 
@@ -106,9 +123,9 @@
 
             $result .= $endline;
 
-            if (!is_null($this->pathToFile)) {
+            if (!is_null($this->uploadFilePath)) {
                 $result .= (new CommandEntity(0, Instruction::WORKDIR, '/home', 0))->toString() . $endline;
-                $result .= (new CommandEntity(0, Instruction::ADD, $this->pathToFile.' /home/', 0))->toString() . $endline;
+                $result .= (new CommandEntity(0, Instruction::ADD, $this->uploadFilePath.' /home/', 0))->toString() . $endline;
                 $result .= $endline;
             }
 

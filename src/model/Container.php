@@ -1,6 +1,7 @@
 <?php
 	require_once('Image.php');
 	require_once('Port.php');
+	require_once ('Network.php');
 
 	class Container {
 		
@@ -30,6 +31,8 @@
 
 		private $image;
 		private $ports;
+
+		private $network;
 
 		public function __construct() {
 			//no-construct
@@ -81,7 +84,7 @@
             $instance->setPath($obj['Path']);
 
              //state
-            $instance->setStatus($obj['State']['Status']);
+            $instance->setState($obj['State']['Status']);
             $instance->setStartedAt($obj['State']['StartedAt']);
             $instance->setFinishedAt($obj['State']['FinishedAt']);
 
@@ -90,6 +93,9 @@
             $instance->setEnv($obj['Config']['Env']);
             $instance->setWorkingDir($obj['Config']['WorkingDir']);
             $instance->setEntryPoint($obj['Config']['Entrypoint']);
+
+            //network
+            $instance->setNetwork(Network::fromJsonObject($obj['NetworkSettings']));
 
             return $instance;
         }
@@ -358,8 +364,24 @@
             $this->entryPoint = $entryPoint;
         }
 
+        /**
+         * @return mixed
+         */
+        public function getNetwork()
+        {
+            return $this->network;
+        }
+
+        /**
+         * @param mixed $network
+         */
+        public function setNetwork($network): void
+        {
+            $this->network = $network;
+        }
+
         public function isRunning(){
-            return $this->status == "running";
+            return $this->state == "running";
         }
 	}
 

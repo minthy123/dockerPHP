@@ -7,6 +7,7 @@
         const START_CONTAINER_COMMAND = '/containers/%s/start';
         const RESTART_CONTAINER_COMMAND = '/containers/%s/restart?t=5';
         const KILL_CONTAINER_COMMAND = '/containers/%s/kill';
+        const DELETE_CONTAINER_COMMAND = '/containers/%s?force=true';
         const LIST_ALL_CONTAINERS = '/containers/json?all=1';
         const CONTAINER_INFO = '/containers/%s/json';
 
@@ -27,6 +28,20 @@
             return $result;
         }
 
+        public function countContainers(){
+            $containers = self::getAllContainers();
+
+            $countRunning = 0;
+
+            foreach ($containers as $container) {
+                if ($container->isRunning()) {
+                    $countRunning++;
+                }
+            }
+            
+            return array($countRunning, count($containers));
+        }
+
         public function stopConatiner($id) {
             $this->dockerClient->postCommand(
                 $this->replaceContainerId(self::STOP_CONTAINER_COMMAND, $id));
@@ -40,6 +55,11 @@
         public function killContainer($id) {
             $this->dockerClient->postCommand(
                 $this->replaceContainerId(self::KILL_CONTAINER_COMMAND, $id));
+        }
+
+        public function deleteContainer($id) {
+            $this->dockerClient->deleteCommand(
+                $this->replaceContainerId(self::DELETE_CONTAINER_COMMAND, $id));
         }
 
         public function restartContainer($id) {
@@ -75,11 +95,11 @@
             case 'CHECK' :
                 include_once ("CommandExecution.php");
                 $commandExecution = new CommandExecution();
-                $commandExecution->execute("docker logs -f " .$_GET['container-id']);
+                $commandExecution->executeSteam("docker logs -f " .$_GET['container-id']);
                 break;
 
             case 'DELETE' :
-                $containerClient->killContainer($_GET['container-id']);
+                $containerClient->deleteContainer($_GET['container-id']);
                 break;
 
             case 'START' :

@@ -15,4 +15,10 @@ CREATE TABLE IF NOT EXISTS command (
 CREATE TABLE IF NOT EXISTS dependence (
     library_id INTEGER NOT NULL,
     parent_library_id INTEGER NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS user (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    username TEXT NOT NULL,
+    password TEXT NOT NULL
 )

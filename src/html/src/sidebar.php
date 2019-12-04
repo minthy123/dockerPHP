@@ -31,6 +31,13 @@
           </a>
         </li>
 
+      <li class="nav-item <?php if ($GLOBALS['toogle'] == 'configuration') echo "active"; ?>">
+          <a class="nav-link" href="./Configuration.php">
+              <i class="material-icons">settings_applications</i>
+              <p>Configurations</p>
+          </a>
+      </li>
+
         <li class="nav-item <?php if ($GLOBALS['toogle'] == 'terminal') echo "active"; ?>">
           <a class="nav-link" href="./Terminal.php">
             <i class="material-icons">content_paste</i>
@@ -40,3 +47,12 @@
       </ul>
     </div>
 </div>
+
+
+<?php
+  if (!isset($GLOBALS['config'])) {
+    include_once ("/var/www/html/src/service/ConfigService.php");
+
+    $GLOBALS['config'] = ConfigService::loadConfig();
+  }
+?>

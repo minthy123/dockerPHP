@@ -17,7 +17,7 @@ INSERT INTO library(id, name, isGPU) VALUES
 
 INSERT INTO command(docker_instructor, cmd, library_id) VALUES 
                 ("FROM", "ubuntu:latest", 0),
-                ("RUN", "apt-get update -y", 0),
+                ("RUN", "apt-get pdate -y", 0),
                 ("RUN", "apt-get install -y python3-dev python3-pip", 2),
                 ("RUN", "pip3 install --user --upgrade tensorflow", 5),
                 ("RUN", "pip3 install jupyter", 6),
@@ -57,3 +57,6 @@ INSERT INTO dependence(library_id, parent_library_id) VALUES
 (10, 13),
 (16, 2),
 (17, 2);
+
+INSERT INTO user(username, password) VALUES
+("admin", "21232f297a57a5a743894a0e4a801fc3");

@@ -77,7 +77,7 @@
         <div class="content">
         <div class="container-fluid">
         <!-- Main content -->
-        <?php include_once ("ImageDisplay.php"); ?>
+        <?php include_once ("image/ImageDisplay.php"); ?>
         </div>
       </div>
       <footer class="footer">

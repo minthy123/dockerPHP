@@ -10,8 +10,6 @@
     }  else die();
 ?>
 
-<script src="log.js"></script>
-
 <div class="card">
     <div class="card-header card-header-tabs card-header-primary">
         <div class="nav-tabs-navigation">
@@ -23,12 +21,21 @@
                             <div class="ripple-container"></div>
                         </a>
                     </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="#network" data-toggle="tab">
+                            <i class="material-icons">cloud</i> Network
+                            <div class="ripple-container"></div>
+                        </a>
+                    </li>
+
                     <li class="nav-item">
                         <a class="nav-link" href="#log" data-toggle="tab" id="log-1">
                             <i class="material-icons">notes</i> Log
                             <div class="ripple-container"></div>
                         </a>
                     </li>
+
                     <li class="nav-item">
                         <a class="nav-link" href="#exec" data-toggle="tab">
                             <i class="material-icons">cloud</i> Exec
@@ -43,6 +50,9 @@
         <div class="tab-content">
             <div class="tab-pane active" id="info">
                 <?php include_once("ContainerInfoDisplay.php"); ?>
+            </div>
+            <div class="tab-pane" id="network">
+                <?php include_once("ContainerNetworkInfoDisplay.php"); ?>
             </div>
             <div class="tab-pane" id="log">
                 <div id="log-container"></div>
@@ -60,7 +70,7 @@
     </div>
 </div>
 
-<script src="log.js"></script>
+<script src="./container/log.js"></script>
 <?php echo "<script>$('#log-1').click(function (e) {e.preventDefault();if($(this).hasClass('processing')) return; $(this).addClass('processing') ;setTimeout(function(){checkLogContainer('". $GLOBALS['container']->getId()  ."');}, 1)});</script>" ?>
 
 

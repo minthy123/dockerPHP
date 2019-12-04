@@ -1,7 +1,8 @@
 <?php
+	include_once ("/var/www/html/src/service/ConfigService.php");
+
 	class DockerClient {
 
-		private const DOCKER_SOCKET = "/var/run/docker.sock";
 		private const URL = "http://v1.24%s";
 	    
 	    private $curlClient;
@@ -9,7 +10,10 @@
 
 	    public function __construct() {
 	        $this->curlClient = curl_init();
-	        curl_setopt($this->curlClient, CURLOPT_UNIX_SOCKET_PATH, self::DOCKER_SOCKET);
+			//curl_setopt($this->curlClient, CURLOPT_UNIX_SOCKET_PATH, self::DOCKER_SOCKET);
+			
+			$config = ConfigService::loadConfig();
+			curl_setopt($this->curlClient, CURLOPT_UNIX_SOCKET_PATH, $config->getDockerSocketPath());
 	        curl_setopt($this->curlClient, CURLOPT_RETURNTRANSFER, true);
 	    }
 
@@ -30,6 +34,7 @@
 	        }
 
 	        $result = curl_exec($this->curlClient);
+
 	        if ($result === FALSE) {
 	            $this->curlError = curl_error($this->curlClient);
 	            return array();
@@ -57,6 +62,7 @@
 	        curl_setopt($this->curlClient, CURLOPT_CUSTOMREQUEST, "DELETE");
 			
 			$result = curl_exec($this->curlClient);
+			var_dump($result);
 	        if ($result === FALSE) {
 	            $this->curlError = curl_error($this->curlClient);
 	            return array();

@@ -18,5 +18,21 @@
 
             return $result;
         }
+
+        function addCommands(array $commands) {
+            $db = new Database();
+            $sqlQuery = "INSERT INTO command (docker_instructor, cmd, library_id) VALUES (:docker_instructor, :cmd, :library_id)";
+
+            $db->exec($sqlQuery);
+            $stmt = $db->prepare($sqlQuery);
+            foreach ($commands as $command) {
+                $stmt->bindValue(":docker_instructor", $command->getDockerInstruction());
+                $stmt->bindValue(":cmd", $command->getCmd());
+                $stmt->bindValue(":library_id", $command->getLibraryId());
+                $stmt->execute();
+            }
+
+            return $db->lastInsertRowID();
+        }
     }
 ?>

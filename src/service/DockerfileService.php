@@ -1,5 +1,6 @@
 <?php
-    include_once('LibraryService.php');
+    include_once ('LibraryService.php');
+    include_once ('ConfigService.php');
     include_once ('/var/www/html/src/enum/Instruction.php');
     include_once ('/var/www/html/src/model/Dockerfile.php');
 
@@ -7,6 +8,7 @@
         private $libraryService;
 
         function __construct(){
+            $this->config = ConfigService::loadConfig();
             $this->libraryService = new LibraryService();
         }
 
@@ -45,34 +47,35 @@
             }
 
             $dockerfile->addCommand("tail -f /dev/null");
-
-            $this->saveDockerfile($dockerfile->toString(false), 'dockerfile');
             return $dockerfile;
         }
 
-        function saveDockerfile($content, $filename) {
-            $filename = "/tmp/" . $filename;
-            self::saveFile($content, $filename);
+        function saveDockerfile(Dockerfile $dockerfile) {
+            $filename = $this->config->getDockerfileFolder() . 'dockerfile';
+            $dockerfile->setDockerfilePath($filename);
+
+            self::saveFile($dockerfile->toString(false), $filename);
         }
-        
+
         function createDockerfile($osId, $libraryIds) {
             $isGPU = false;
             $libraries = $this->libraryService->getLibrariesFromOS($osId, $libraryIds, $isGPU);
 
             $dockerfile = $this->createCommand($libraries);
             $dockerfile->setIsGPU($isGPU);
+            $this->saveDockerfile($dockerfile);
 
             return $dockerfile;
         }
 
-        function uploadFileToDockerfile($dockerfile, $fileUpload) {
-            $filename = "/tmp/". $fileUpload['name'];
+        function uploadFileToDockerfile(Dockerfile $dockerfile, array $fileUpload) {
+            $filename = $this->config->getUploadFolder(). $fileUpload['name'];
             $this->saveFile($fileUpload['tmp_name'], $filename);
 
-            $dockerfile->setPathToFile($filename);
+            $dockerfile->setUploadFilePath($filename);
         }
 
-        private function saveFile($content, $filename) {
+        private function saveFile(string $content, string $filename) {
             try {
                 if(!file_exists($filename)){
                     touch($filename);

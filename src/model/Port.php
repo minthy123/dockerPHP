@@ -6,7 +6,7 @@
 		private $type;
 
 		public function __construct() {
-			// no-contruct
+			// no-construct
 		}
 
 		public static function fromJSONObject($obj) {

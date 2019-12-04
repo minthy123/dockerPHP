@@ -223,5 +223,32 @@
 
             return $result;
         }
+
+        public function addLibrary(LibraryEntity $library) {
+            $libraryId = $this->libraryDao->addLibrary($library);
+            foreach ($library->getCommands() as $command) {
+                $command->setLibraryId ($libraryId);
+            }
+
+            $this->commandDao->addCommands($library->getCommands());
+        }
+
+        public function parseCommand(string $string) {
+            $commamds = [];
+            foreach (explode("\n",$string) as $commandString) {
+                $commandString1 = preg_replace("/ +/", " " , $commandString);
+
+                $posFirstSpace = strpos($commandString1, " ");
+
+                $dockerInstructor = substr($commandString1, 0, $posFirstSpace);
+                $cmd = substr($commandString1, $posFirstSpace);
+
+                $commamd= new CommandEntity(0, $dockerInstructor, $cmd, 0);
+
+                array_push($commamds, $commamd);
+            }
+
+            return $commamds;
+        }
     }
 ?>

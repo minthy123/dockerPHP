@@ -103,24 +103,32 @@
 
                           foreach ($containers as $container) {
                             echo "<tr>";
+                              echo "\n";
                             echo "<td><a href=\"./container.php?container-id=".$container->getId()."\">". substr($container->getId(), 0, 12)."</a></td>";
+                            echo "\n";
                             echo "<td class='wrap-td'>".$container->getName()."</td>";
+                              echo "\n";
                             echo "<td class='wrap-td'>".$container->getImage()->getName()."</td>";
+                              echo "\n";
                             echo "<td class='wrap-td'>".$container->getState()."</td>";
+                              echo "\n";
                             echo "<td class='wrap-td'>".$container->getStatus()."</td>";
+                              echo "\n";
 
                             echo "<td class=\"td-actions\">";
                             if ($container->getState() == "exited") {
                               echo "<button type=\"button\" rel=\"tooltip\" class=\"btn btn-success\" onclick=startContainer('". str_replace("sha256:", "", $container->getId()) ."')><i class=\"material-icons\">play_arrow</i></button>";
                             } else if ($container->getState() == "running") {
                               echo "<button type=\"button\" rel=\"tooltip\" class=\"btn btn-danger\" onclick=stopContainer('". str_replace("sha256:", "", $container->getId()) ."')><i class=\"material-icons\">pause</i></button>";
+
                             }
-
-                            echo "<button type=\"button\" rel=\"tooltip\" class=\"btn btn-info\" onclick=restartContainer('". $container->getId(). "><i class=\"material-icons\">loop</i></button>";
-                            echo "<button type=\"button\" rel=\"tooltip\" class=\"btn btn-danger\" onclick=deleteContainer('". $container->getId(). "><i class=\"material-icons\">close</i></button>";
-
+                              echo "\n";
+                            echo "<button type=\"button\" rel=\"tooltip\" class=\"btn btn-info\" onclick=restartContainer('". $container->getId(). "')><i class=\"material-icons\">loop</i></button>";
+                              echo "\n";
+                            echo "<button type=\"button\" rel=\"tooltip\" class=\"btn btn-danger\" onclick=deleteContainer('". $container->getId(). "')><i class=\"material-icons\">close</i></button>";
+                              echo "\n";
                             echo "</td>";
-
+                              echo "\n";
                             echo "</tr>";
                           }
                         ?>
@@ -147,60 +155,46 @@
 
   <script type="text/javascript"> 
     function stopContainer(containerId) {
-        $.get('/src/restclient/ContainerClient.php', {'container-id' : containerId, 'operation': 'STOP'})
-          .done(function(data) {
-            console.log(data);
-            location.reload(true);
-          });
-          console.log('Request Sent'); 
+        executeContainer(containerId, 'STOP');
       }
 
       function startContainer(containerId) {
-        $.get('/src/restclient/ContainerClient.php', {'container-id' : containerId, 'operation': 'START'})
-          .done(function(data) {
-            console.log(data);
-            location.reload(true);
-          });
-          console.log('Request Sent'); 
+        executeContainer(containerId, 'START');
       }
 
     function deleteContainer(containerId) {
-        $.get('/src/restclient/ContainerClient.php', {'container-id' : containerId, 'operation': 'DELETE'})
-            .done(function(data) {
-                console.log(data);
-                location.reload(true);
-            });
-        console.log('Request Sent');
+        executeContainer(containerId, 'DELETE');
     }
 
     function restartContainer(containerId) {
-        $.get('/src/restclient/ContainerClient.php', {'container-id' : containerId, 'operation': 'RESTART'})
+        executeContainer(containerId, 'RESTART');
+    }
+
+    function executeContainer(containerId, operation) {
+      $.get('/src/restclient/ContainerClient.php', {'container-id' : containerId, 'operation': operation})
             .done(function(data) {
-                console.log(data);
+                //console.log(data);
                 location.reload(true);
             });
-        console.log('Request Sent');
     }
+
+    $('.wrap-td').each(function () {
+        var text = $(this).text();
+
+        const LENGTH_TRIM = 20;
+
+        if (text.length >= LENGTH_TRIM) {
+            $(this).attr('data-toggle', 'tooltip')
+                .attr('data-placement', 'top')
+                .attr('title', text)
+                .text($.trim(text).substring(0, LENGTH_TRIM) + "...");
+        }
+    });
+
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip();
+    });
   </script>
-
-    <script>
-        $('.wrap-td').each(function () {
-            var text = $(this).text();
-
-            const LENGTH_TRIM = 20;
-
-            if (text.length >= LENGTH_TRIM) {
-                $(this).attr('data-toggle', 'tooltip')
-                    .attr('data-placement', 'top')
-                    .attr('title', text)
-                    .text($.trim(text).substring(0, LENGTH_TRIM) + "...");
-            }
-        });
-
-        $(function () {
-            $('[data-toggle="tooltip"]').tooltip();
-        });
-    </script>
   
 </body>
 

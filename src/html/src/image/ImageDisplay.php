@@ -10,8 +10,6 @@
     }  else die();
 ?>
 
-<script src="log.js"></script>
-
 <div class="card">
     <div class="card-header card-header-tabs card-header-primary">
         <div class="nav-tabs-navigation">
@@ -24,14 +22,14 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#log" data-toggle="tab">
-                            <i class="material-icons">notes</i> Log
+                        <a class="nav-link" href="#history" data-toggle="tab">
+                            <i class="material-icons">notes</i> History
                             <div class="ripple-container"></div>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#exec" data-toggle="tab">
-                            <i class="material-icons">cloud</i> Exec
+                        <a class="nav-link" href="#create" data-toggle="tab">
+                            <i class="material-icons">create</i> Create container
                             <div class="ripple-container"></div>
                         </a>
                     </li>
@@ -46,11 +44,15 @@
                     include_once("ImageInfoDisplay.php");
                 ?>
             </div>
-            <div class="tab-pane" id="log">
-
+            <div class="tab-pane" id="history">
+                <?php
+                    include_once ("ImageHistoryDisplay.php");
+                ?>
             </div>
-            <div class="tab-pane" id="exec">
-
+            <div class="tab-pane" id="create">
+                <?php
+                    include_once ('ContainerCreatingFromImageForm.php');
+                ?>
             </div>
         </div>
     </div>
