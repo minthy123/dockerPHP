@@ -38,10 +38,7 @@ session_start();
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
   <!-- CSS Files -->
   <link href="../assets/css/material-dashboard.css?v=2.1.1" rel="stylesheet" />
-  <!-- CSS Just for demo purpose, don't include it in your project -->
-  <link href="../assets/demo/demo.css" rel="stylesheet" />
-
-    <script src="../assets/js/md5.min.js"></script>
+  <script src="../assets/js/md5.min.js"></script>
   <?php include_once('script.html'); ?>
 </head>
 
@@ -51,45 +48,18 @@ session_start();
       $GLOBALS['toogle'] = 'configuration';
       include_once('sidebar.php'); ?>
     <div class="main-panel">
-      <!-- Navbar -->
-      <nav class="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top ">
-        <div class="container-fluid">
-          <div class="navbar-wrapper">
-            <a class="navbar-brand" href="#pablo">Configuration</a>
-          </div>
-          <button class="navbar-toggler" type="button" data-toggle="collapse" aria-controls="navigation-index"
-            aria-expanded="false" aria-label="Toggle navigation">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="navbar-toggler-icon icon-bar"></span>
-            <span class="navbar-toggler-icon icon-bar"></span>
-            <span class="navbar-toggler-icon icon-bar"></span>
-          </button>
-          <div class="collapse navbar-collapse justify-content-end">
-            <form class="navbar-form">
-              <div class="input-group no-border">
-                <input type="text" value="" class="form-control" placeholder="Search...">
-                <button type="submit" class="btn btn-white btn-round btn-just-icon">
-                  <i class="material-icons">search</i>
-                  <div class="ripple-container"></div>
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      </nav>
-      <!-- End Navbar -->
-      <div class="content">
+<!--      <div class="content">-->
         <div class="container-fluid">
         <!-- Main content -->
             <?php
                 if (isset($_SESSION['key']) ) {
-                    include_once ("ConfigurationDisplay.php");
+                    include_once("configuration/ConfigurationDisplay.php");
                 } else {
-                    include_once ("login.php");
+                    include_once("configuration/login.php");
                 }
             ?>
         </div>
-      </div>
+<!--      </div>-->
       <footer class="footer">
         <div class="container-fluid">
           <div class="copyright float-right">

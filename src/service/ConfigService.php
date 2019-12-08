@@ -1,21 +1,18 @@
 <?php
     include_once ('/var/www/html/src/model/Config.php');
+    include_once ('/var/www/html/src/utils/Utils.php');
 
     class ConfigService {
         private const CONFIG_FILE_PATH = '/var/www/html/config.json';
         
-        public static function loadConfig() {
-            if (file_exists(self::CONFIG_FILE_PATH)) {
-                $file = fopen(self::CONFIG_FILE_PATH, 'r');
-                $content = fread($file,filesize(self::CONFIG_FILE_PATH));
-                return Config::fromJSONObject(json_decode($content, true));                
-            }
-
-            return null;
+        public static function loadConfig() : ? Config {
+            $content = Utils::readFile(self::CONFIG_FILE_PATH);
+            return is_null($content) ? null :
+                Config::fromJSONObject(json_decode($content, true));
         }
 
-        public function modifyConfig($config) {
-            
+        public static function modifyConfig(Config $config) : void {
+            Utils::saveFile($config->toJson(), self::CONFIG_FILE_PATH);
         }
     }
 ?>

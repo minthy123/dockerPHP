@@ -1,10 +1,10 @@
 {
-  "project_name" : "Docker UI",
-  "version" : 1,
-  "upload_folder": "/tmp/",
-  "dockerfile_folder" : "/tmp/",
-  "docker_unix_socket": "/var/run/docker.sock",
-  "docker_count" : 0,
-  "terminal_port" : 32768,
-  "terminal_docker_exec_port" : 32769
+    "project_name": "Docker UI",
+    "version": 1,
+    "upload_folder": "\/tmp\/",
+    "dockerfile_folder": "\/tmp\/",
+    "docker_count": 35,
+    "docker_unix_socket": "\/var\/run\/docker.sock",
+    "terminal_port": 32768,
+    "terminal_docker_exec_port": 32769
 }

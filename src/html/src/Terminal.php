@@ -79,7 +79,7 @@
                     <div class="col-md-12">
                         <div class="card-body">
                             <div class="iframe-container d-none d-lg-block">
-                                <iframe src="<?php echo "http://".$_SERVER['SERVER_NAME'].":32768" ?>">
+                                <iframe src="<?php echo "http://".$_SERVER['SERVER_NAME'].":".ConfigService::loadConfig()->getPortTerminal() ?>">
                                     <p>Your browser does not support iframes.</p>
                                 </iframe>
                             </div>
@@ -95,16 +95,7 @@
 
         </div>
       </div>
-      <footer class="footer">
-        <div class="container-fluid">
-          <div class="copyright float-right">
-            &copy;
-            <script>
-              document.write(new Date().getFullYear())
-            </script>
-          </div>
-        </div>
-      </footer>
+        <?php include_once ("Footer.php"); ?>
     </div>
   </div>
 </body>

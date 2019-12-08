@@ -18,7 +18,15 @@
         <tr>
             <td>Docker count</td><td contenteditable="true"><?php echo $GLOBALS['config']->getDockerCount(); ?></td>
         </tr>
+
+        <tr>
+            <td>Port terminal</td><td contenteditable="true"><?php echo $GLOBALS['config']->getPortTerminal(); ?></td>
+        </tr>
+
+        <tr>
+            <td>Port exec container</td><td contenteditable="true"><?php echo $GLOBALS['config']->getPortExecContainer(); ?></td>
+        </tr>
     </tbody>
 </table>
 
-<script src="editConfig.js"></script>
+<script src="../editConfig.js"></script>

@@ -38,15 +38,9 @@
 
     <?php include_once('script.html'); ?>
 <!--    <link rel="stylesheet" href="../assets/css/docs.min.css"/>-->
-    <link rel="stylesheet"
-          href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.16.2/build/styles/default.min.css">
-    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.16.2/build/highlight.min.js"></script>
+    <link rel="stylesheet" href="../highlightjs/styles/default.css">
+    <script src="../highlightjs/highlight.pack.js"></script>
     <script>hljs.initHighlightingOnLoad();</script>
-<!--    <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>-->
-<!--    <link-->
-<!--            rel="stylesheet"-->
-<!--            href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.5.0/themes/prism.min.css"-->
-<!--    />-->
 
 </head>
 
@@ -90,16 +84,7 @@
           ?>
         </div>
       </div>
-      <footer class="footer">
-        <div class="container-fluid">
-          <div class="copyright float-right">
-            &copy;
-            <script>
-              document.write(new Date().getFullYear())
-            </script>
-          </div>
-        </div>
-      </footer>
+        <?php include_once ("Footer.php"); ?>
     </div>
   </div>
 </body>

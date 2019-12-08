@@ -81,7 +81,7 @@
 		    $cmdString = $this->cmd->getCmd();
 
 		    if ($cmdString != self::EMPTY_STRING) {
-                $cmdString .= " | ";
+                $cmdString .= " ; ";
             }
 		    $cmdString .= $command;
 
@@ -125,7 +125,7 @@
 
             if (!is_null($this->uploadFilePath)) {
                 $result .= (new CommandEntity(0, Instruction::WORKDIR, '/home', 0))->toString() . $endline;
-                $result .= (new CommandEntity(0, Instruction::ADD, $this->uploadFilePath.' /home/', 0))->toString() . $endline;
+                $result .= (new CommandEntity(0, Instruction::COPY, $this->uploadFilePath.' /home/', 0))->toString() . $endline;
                 $result .= $endline;
             }
 

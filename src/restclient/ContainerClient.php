@@ -10,6 +10,8 @@
         const DELETE_CONTAINER_COMMAND = '/containers/%s?force=true';
         const LIST_ALL_CONTAINERS = '/containers/json?all=1';
         const CONTAINER_INFO = '/containers/%s/json';
+        const DOWNLOAD_FILE_IN_CONTAINER = "/containers/%s/archive?path=%s";
+        const LOGS = "/containers/%s/logs?stderr=1&stdout=1&follow=1";
 
         private $dockerClient;
 
@@ -40,6 +42,18 @@
             }
             
             return array($countRunning, count($containers));
+        }
+
+        public function downloadContainer($id, string $path) {
+            return $this->dockerClient->downloadFile(sprintf(self::DOWNLOAD_FILE_IN_CONTAINER, $id, $path));
+        }
+
+//        public function logsContainer($id) {
+//            return $this->dockerClient->streamData(sprintf(self::LOGS, $id));
+//        }
+
+        public function uploadContainer($id, string $path, $file) {
+            $this->dockerClient->uploadFile(sprintf(self::DOWNLOAD_FILE_IN_CONTAINER, $id, $path), $file);
         }
 
         public function stopConatiner($id) {
@@ -96,6 +110,7 @@
                 include_once ("CommandExecution.php");
                 $commandExecution = new CommandExecution();
                 $commandExecution->executeSteam("docker logs -f " .$_GET['container-id']);
+//                $containerClient->logsContainer($_GET['container-id']);
                 break;
 
             case 'DELETE' :

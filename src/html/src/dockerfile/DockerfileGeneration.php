@@ -13,11 +13,15 @@
 		    $GLOBALS['dockerfile']->addCommand($_POST['command-input']);
         }
 
-		if (isset($_FILES['fileToUpload']) && $_FILES['fileToUpload']['size'] >0 ) {
+		if (isset($_FILES['fileToUpload']) && $_FILES['fileToUpload']['size'] > 0) {
             $dockerfileService->uploadFileToDockerfile($GLOBALS['dockerfile'], $_FILES['fileToUpload']);
         }
 
+        $GLOBALS['dockerfile']->addCommand("echo \"\\n\";tail -f /dev/null");
+
 		$GLOBALS['dockerfileString'] = $GLOBALS['dockerfile']->toString(false);
+
+		$dockerfileService->saveDockerfile($GLOBALS['dockerfile']);
 
         require_once('/var/www/html/src/service/DockerBuildService.php');
         $dockerBuildService = new DockerBuildService();
@@ -28,39 +32,41 @@
 ?>
 
     <div class="row">
-    <div class="col-md-4">
-    <div class="card">
-        <div class="card-header card-header-text card-header-primary">
-            <div class="card-text">
-                <h4 class="card-title">Dockerfile</h4>
+        <div class="col-md-5">
+            <div class="card">
+                <div class="card-header card-header-text card-header-primary">
+                    <div class="card-text">
+                        <h4 class="card-title">Dockerfile</h4>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <pre>
+                        <?php echo "<code>". $GLOBALS['dockerfile']->toString(false) . "</code>"; ?>
+                    </pre>
+                </div>
             </div>
         </div>
-        <div class="card-body">
-            <pre>
-                <?php echo "<code class=\"dockerfile\">". $GLOBALS['dockerfile']->toString(false) . "</code>"; ?>
-            </pre>
+
+    <div class="col-md-7">
+        <div class="card">
+            <div class="card-header card-header-primary">
+                <h4 class="card-title">Build image</h4>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="dockerbuild col-md-10">
+                        <pre>
+                            <?php echo "<code id=\"build-command\" class=\"bash\">".$GLOBALS['dockerbuildString']."</code>"; ?>
+                        </pre>
+                    </div>
+                    <div class="col-md-2">
+                        <button id='button-build-image' class="btn btn-primary btn-regular">Build</button>
+                    </div>
+                    
+                </div>
+                <div id='build-docker-log'></div>
+            </div>
         </div>
-    </div>
-    </div>
-
-
-
-    <div class="col-md-8">
-    <div class="card">
-        <div class="card-header card-header-primary">
-            <h4 class="card-title">Build image</h4>
-        </div>
-    <div class="card-body">
-        <div class="dockerbuild ">
-            <pre>
-                <?php echo "<code id=\"build-command\" class=\"language-bash\">".$GLOBALS['dockerbuildString']."</code>"; ?>
-            </pre>
-        </div>
-
-        <button id='button-build-image'>Build</button>
-        <div id='build-docker-log'></div>
-    </div>
-    </div>
     </div>
 
 <script type="module" src="dockerfile/build.js">

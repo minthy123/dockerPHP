@@ -4,8 +4,12 @@
         static private $DOCKER_BUILD_COMMAND="docker build --rm --no-cache -t <image_name> -f <dockerfile_name> .";
 
         private $buildCommand;
+        private $configService;
+        private $config;
 
         function __construct() {
+            $this->configService = new ConfigService();
+            $this->config = ConfigService::loadConfig();
         }
 
         function handleName($imageName) {

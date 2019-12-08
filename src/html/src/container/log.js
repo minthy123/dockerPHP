@@ -9,8 +9,8 @@ function checkLogContainer(containerId) {
         type: 'GET',
         url: '/src/restclient/ContainerClient.php',
         data: {
-            'container-id': containerId,
-            'operation': 'CHECK'
+            'operation': 'CHECK',
+            'container-id': containerId
         },
         xhrFields: {
             onprogress: function (e) {

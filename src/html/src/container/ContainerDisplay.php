@@ -42,6 +42,13 @@
                             <div class="ripple-container"></div>
                         </a>
                     </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="#down" data-toggle="tab">
+                            <i class="material-icons">cloud</i> Download and upload
+                            <div class="ripple-container"></div>
+                        </a>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -61,6 +68,16 @@
                 <?php
                     if ($GLOBALS['container']->isRunning()) {
                         include_once ("ContainerExecDisplay.php");
+                    } else {
+                        echo "<h3>Container is not working</h3>";
+                    }
+                ?>
+            </div>
+
+            <div class="tab-pane" id="down">
+                <?php
+                    if ($GLOBALS['container']->isRunning()) {
+                        include_once ("ContainerDownload.php");
                     } else {
                         echo "<h3>Container is not working</h3>";
                     }

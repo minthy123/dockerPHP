@@ -2,6 +2,7 @@
     include_once ('LibraryService.php');
     include_once ('ConfigService.php');
     include_once ('/var/www/html/src/enum/Instruction.php');
+    include_once ('/var/www/html/src/utils/Utils.php');
     include_once ('/var/www/html/src/model/Dockerfile.php');
 
     class DockerfileService {
@@ -46,15 +47,19 @@
                 }
             }
 
-            $dockerfile->addCommand("tail -f /dev/null");
+//            $dockerfile->addCommand("tail -f /dev/null");
             return $dockerfile;
         }
 
         function saveDockerfile(Dockerfile $dockerfile) {
-            $filename = $this->config->getDockerfileFolder() . 'dockerfile';
+            $this->config->increaseDockerCount();
+            ConfigService::modifyConfig($this->config);
+            $filename = $this->config->getDockerfileFolder() . 'dockerfile'. $this->config->getDockerCount();
+
+
             $dockerfile->setDockerfilePath($filename);
 
-            self::saveFile($dockerfile->toString(false), $filename);
+            Utils::saveFile($dockerfile->toString(false), $filename);
         }
 
         function createDockerfile($osId, $libraryIds) {
@@ -63,33 +68,17 @@
 
             $dockerfile = $this->createCommand($libraries);
             $dockerfile->setIsGPU($isGPU);
-            $this->saveDockerfile($dockerfile);
+            //$this->saveDockerfile($dockerfile);
 
             return $dockerfile;
         }
 
         function uploadFileToDockerfile(Dockerfile $dockerfile, array $fileUpload) {
             $filename = $this->config->getUploadFolder(). $fileUpload['name'];
-            $this->saveFile($fileUpload['tmp_name'], $filename);
+//            Utils::saveFile($fileUpload['tmp_name'], $filename);
+            move_uploaded_file($fileUpload['tmp_name'], $filename);
 
-            $dockerfile->setUploadFilePath($filename);
-        }
-
-        private function saveFile(string $content, string $filename) {
-            try {
-                if(!file_exists($filename)){
-                    touch($filename);
-                    chmod($filename, 0777);
-                }
-
-                $dockerfile = fopen($filename, "w") or die("Unable to open file!");
-
-                fwrite($dockerfile, $content);
-                fclose($dockerfile);
-
-            } catch (Exception $e) {
-                echo 'Caught exception: ',  $e->getMessage(), "\n";
-            }
+            $dockerfile->setUploadFilePath($fileUpload['name']);
         }
     }
 ?>

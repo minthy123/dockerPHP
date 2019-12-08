@@ -3,9 +3,9 @@
     require_once("/var/www/html/src/model/OsAndLibraries.php");
 
     $libraryService = new LibraryService();
-    $GLOBALS['osAndLibraries'] = $libraryService->getLibrariesSeperateByOS();
+    $GLOBALS['osAndLibraries'] = $libraryService->getLibrariesSeparatedByOS();
 ?>
-
+<div class="card-body">
 <div id="choosing-os"><label>1) Please choose OS:</label><br>
     <form action="" method="get" id="choosing-os-1">
         <?php
@@ -42,7 +42,7 @@
 
 <div id="choosing-libraries">
     <label>2) Choosing libraries: </label><br>
-    <form action="dockerfile_creation.php" method="post" enctype="multipart/form-data">
+    <form action="dockerfile_creation.php" method="post" id="form-1" enctype="multipart/form-data">
 <!--        <select name="library-ids[]" multiple size = 6>-->
             <?php
                 if (isset($_GET['os-id'])) {
@@ -95,11 +95,12 @@
 <!--                        <label>3) Input the image name:<br></label>-->
 <!--                        <input type="text" name="image-name" placeholder="Image name"><br>-->
 
-                        <div class="form-group form-file-upload form-file-multiple">
-                            <label for="input" class="bmd-label-floating">4) Upload your file:</label>
-                            <input type="file" multiple="" name="fileToUpload" id="input" class="inputFileHidden">
+                        <div class="form-group form-file-upload form-file-multiple bmd-form-group">
+<!--                            <label for="input" class="bmd-label-floating">4) Upload your file:</label>-->
+<!--                            <input type="file" multiple name="fileToUpload" id="input" class="inputFileHidden" >-->
+                            <input type="file" class="inputFileHidden" name="fileToUpload">
                             <div class="input-group">
-                                <input type="text" class="form-control inputFileVisible">
+                                <input type="text" class="form-control inputFileVisible" placeholder="4) Upload your file:">
                                 <span class="input-group-btn">
                                     <button type="button" class="btn btn-fab btn-round btn-primary">
                                         <i class="material-icons">attach_file</i>
@@ -122,7 +123,44 @@
         </div>
 
         <input type="hidden" name="os-id" value="<?php echo $_GET['os-id'];?>">
-        <button name="submit" type="submit" value="submit" class="btn btn-primary">Submit</button>
+<!--        <button name="submit" type="submit" value="submit" class="btn btn-primary">Submit</button>-->
     </form>
 </div>
+</div>
+<div class="card-footer">
+    <button name="submit" type="submit" value="submit" form="form-1" class="btn btn-primary">Submit</button>
+</div>
+
+<script>
+    // FileInput
+    $('.form-file-simple .inputFileVisible').click(function() {
+        $(this).siblings('.inputFileHidden').trigger('click');
+    });
+
+    $('.form-file-simple .inputFileHidden').change(function() {
+        var filename = $(this).val().replace(/C:\\fakepath\\/i, '');
+        $(this).siblings('.inputFileVisible').val(filename);
+    });
+
+    $('.form-file-multiple .inputFileVisible, .form-file-multiple .input-group-btn').click(function() {
+        $(this).parent().parent().find('.inputFileHidden').trigger('click');
+        $(this).parent().parent().addClass('is-focused');
+    });
+
+    $('.form-file-multiple .inputFileHidden').change(function() {
+        var names = '';
+        for (var i = 0; i < $(this).get(0).files.length; ++i) {
+            if (i < $(this).get(0).files.length - 1) {
+                names += $(this).get(0).files.item(i).name + ',';
+            } else {
+                names += $(this).get(0).files.item(i).name;
+            }
+        }
+        $(this).siblings('.input-group').find('.inputFileVisible').val(names);
+    });
+
+    $('.form-file-multiple .btn').on('focus', function() {
+        $(this).parent().siblings().trigger('focus');
+    });
+</script>
 

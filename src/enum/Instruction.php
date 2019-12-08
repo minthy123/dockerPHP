@@ -1,6 +1,5 @@
 <?php
 
-
     abstract class Instruction {
         const FROM = "FROM";
         const RUN = "RUN";
@@ -8,6 +7,7 @@
         const EXPOSE = "EXPOSE";
         const WORKDIR = "WORKDIR";
         const ADD = "ADD";
+        const COPY = "COPY";
     }
 
 ?>

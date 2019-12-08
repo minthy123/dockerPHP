@@ -72,67 +72,66 @@
       <div class="content">
         <div class="container-fluid">
           <!-- Main content -->
-          <div class="col-md-12">
-            <table class="table table-striped table-hover">
-              <thead>
-                <tr>
-                  <th><a href="">ID</a></th>
-                  <th><a href="">NAME</a></th>
-                  <th><a href="">RETROTAGS</a></th>
-                  <th><a href="">CREATED</a></th>
-                  <th><a href="">VITURAL SIZE</a>
-                  </th>
-                  <th>OPERATION</th>
-                </tr>
-              </thead>
+            <div class="row">
+                  <div class="col-md-1"></div>
+                  <div class="col-md-10">
+                      <div class="card card-plain">
+                          <div class="card-header-primary card-header">
+                              <h2 class="card-title">Image</h2>
+                          </div>
+                          <div class="card-body">
+                              <div class="table-responsive">
+                                <table class="table table-striped table-hover">
+                                  <thead>
+                                    <tr>
+                                      <th><a href="">ID</a></th>
+                                      <th><a href="">NAME</a></th>
+                                      <th><a href="">CREATED</a></th>
+                                      <th><a href="">VITURAL SIZE</a>
+                                      </th>
+                                      <th>OPERATION</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                     <?php
+                                    include_once('/var/www/html/src/restclient/ImageClient.php');
 
-              <?php
-                include_once('/var/www/html/src/restclient/ImageClient.php');
+                                    $imageClient = new ImageClient();
+                                    $images = $imageClient->getAllImages();
 
-                $imageClient = new ImageClient();
-                $images = $imageClient->getAllImages();
+                                    foreach ($images as $image) {
+                                      echo "<tr>\n";
+                                      echo "<td><a data-toggle=\"tooltip\" data-placement=\"top\" title='". $image->getId() ."' href=\"./image.php?image-id=".$image->getId()."\">". substr($image->getId(), 0, 12)."</a></td>\n";
 
-                foreach ($images as $image) {
-                  echo "<tr>\n";
-                  echo "<td><a data-toggle=\"tooltip\" data-placement=\"top\" title='". $image->getId() ."' href=\"./image.php?image-id=".$image->getId()."\">". substr($image->getId(), 0, 12)."</a></td>\n";
-
-                  echo "<td data-toggle=\"tooltip\" data-placement=\"top\" title=\"". $image->getName() ."\">".substr($image->getName(), 0, 20)."</td>\n";
-                  echo "<td>".$image->getTag()."</td>\n";
-                  echo "<td>".$image->getCreated()."</td>\n";
-                  echo "<td>".$image->getSize()."</td>\n";
-                  echo "<td><button class=\"btn btn-danger\" onclick=\"deleteImage('". str_replace("sha256:", "", $image->getId()) ."')\">Delete</button>";
-                  echo "\n</tr>\n";
-                }
-              ?>
-          </div>
+                                      echo "<td data-toggle=\"tooltip\" data-placement=\"top\" title=\"". $image->getName() ."\">".substr($image->getName(), 0, 20)."</td>\n";
+                                      echo "<td>".$image->getCreated()."</td>\n";
+                                      echo "<td>".$image->getSize()."</td>\n";
+                                      echo "<td><button class=\"btn btn-danger\" onclick=\"deleteImage('". str_replace("sha256:", "", $image->getId()) ."')\">Delete</button>";
+                                      echo "\n</tr>\n";
+                                    }
+                                  ?>
+                                  </tbody>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+            </div>
         </div>
       </div>
-      <footer class="footer">
-        <div class="container-fluid">
-          <div class="copyright float-right">
-            &copy;
-            <script>
-              document.write(new Date().getFullYear())
-            </script>
-          </div>
-        </div>
-      </footer>
     </div>
   </div>
-  <script>
+  <script type="text/javascript">
       $(function () {
           $('[data-toggle="tooltip"]').tooltip()
-      })
-  </script>
-  <script type="text/javascript"> 
-    function deleteImage(imageId) {
-        $.get('/src/restclient/ImageClient.php', {'image-id' : imageId, 'operation': 'delete'})
-          .done(function(data) {
-            console.log(data);
-            location.reload(true);
-          });
-          console.log('Request Sent'); 
-      }
+      });
+
+        function deleteImage(imageId) {
+            $.get('/src/restclient/ImageClient.php', {'image-id' : imageId, 'operation': 'delete'})
+              .done(function(data) {
+                location.reload(true);
+              });
+              console.log('Request Sent');
+          }
   </script>
 </body>
 

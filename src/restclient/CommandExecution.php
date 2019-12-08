@@ -11,9 +11,10 @@
 			);
 
 			flush();
+            ob_flush();
             $process = proc_open($cmd, $descriptorspec, $pipes, realpath('./'), array());
 			if (is_resource($process)) {
-			    while ($s = fgets($pipes[1])) {
+			    while ($s = fgets($pipes[1], 30)) {
                     print preg_replace("/\r+/", "\r", str_replace("\n", "\r\n", $s));
 
                     flush();
@@ -45,7 +46,9 @@
 
 	if (isset($_POST['cmd'])) {
 		$commandExecution = new CommandExecution();
-		$commandExecution->executeSteam($_POST['cmd']);
+		include_once ("/var/www/html/src/service/ConfigService.php");
+		$uploadFolder = ConfigService::loadConfig()->getUploadFolder();
+		$commandExecution->executeSteam('cd '.$uploadFolder.';'.$_POST['cmd']);
 	}
 
 ?>

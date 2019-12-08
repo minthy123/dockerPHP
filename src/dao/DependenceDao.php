@@ -15,8 +15,32 @@
             }
             
             $db->close();
-
             return $result;
+        }
+
+        function addDependences(array $dependences) : void {
+            $db = new Database();
+            $sqlQuery = "INSERT INTO dependence (library_id, parent_library_id) VALUES (:library_id, :parent_library_id)";
+
+            $stmt = $db->prepare($sqlQuery);
+            foreach ($dependences as $dependence) {
+                $stmt->bindValue(":library_id", $dependence->getLibraryId());
+                $stmt->bindValue(":parent_library_id", $dependence->getParentLibraryId());
+                $stmt->execute();
+            }
+
+            $db->close();
+        }
+
+        function removeDependenceRelatedLibraryId(int $libraryId) {
+            $db = new Database();
+            $sqlQuery = "DELETE FROM dependence WHERE library_id=:library_id OR parent_library_id=:library_id";
+
+            $stmt = $db->prepare($sqlQuery);
+            $stmt->bindValue(":library_id", $libraryId);
+            $stmt->execute();
+
+            $db->close();
         }
     }
 ?>

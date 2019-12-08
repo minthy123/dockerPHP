@@ -18,8 +18,9 @@
         <td>Expose ports</td>
         <td>
             <?php
-            echo join(", ", $GLOBALS['image']->getExposePorts());
-            ?>
+                if ($GLOBALS['image']->getExposePorts() != null && !empty($GLOBALS['image']->getExposePorts())) {
+                    echo join(", ", $GLOBALS['image']->getExposePorts());
+                } ?>
         </td>
     </tr>
     <tr>

@@ -32,11 +32,14 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
   <!-- CSS Files -->
   <link href="../assets/css/material-dashboard.css?v=2.1.1" rel="stylesheet" />
-  <!-- CSS Just for demo purpose, don't include it in your project -->
-  <link href="../assets/demo/demo.css" rel="stylesheet" />
+
     <link rel="stylesheet" href="../node_modules/xterm/dist/xterm.css" />
     <script src="../node_modules/xterm/dist/xterm.js"></script>
     <script src="../node_modules/xterm/dist/addons/fit/fit.js"></script>
+
+    <link rel="stylesheet" href="../highlightjs/styles/default.css">
+    <script src="../highlightjs/highlight.pack.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
 
   <?php include_once('script.html'); ?>
 </head>
@@ -80,16 +83,7 @@
         <?php include_once ("image/ImageDisplay.php"); ?>
         </div>
       </div>
-      <footer class="footer">
-        <div class="container-fluid">
-          <div class="copyright float-right">
-            &copy;
-            <script>
-              document.write(new Date().getFullYear())
-            </script>
-          </div>
-        </div>
-      </footer>
+        <?php include_once ("Footer.php"); ?>
     </div>
   </div>
 </body>

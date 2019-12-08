@@ -180,7 +180,7 @@
         }
 
         private function handlePublishPort() {
-            self::replaceArgsFromCommand("{publish_port}", "-P");
+            self::replaceArgsFromCommand("{publish_port}", "-P ");
         }
 
         private function handleExposePorts() {

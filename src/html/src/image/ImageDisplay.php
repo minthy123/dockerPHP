@@ -16,7 +16,7 @@
             <div class="nav-tabs-wrapper">
                 <ul class="nav nav-tabs" data-tabs="tabs">
                     <li class="nav-item">
-                        <a class="nav-link active" href="#info" data-toggle="tab">
+                        <a class="nav-link <?php if (!isset($_POST['submit'])) echo "active show"; ?>" href="#info" data-toggle="tab">
                             <i class="material-icons">info</i> Info
                             <div class="ripple-container"></div>
                         </a>
@@ -28,7 +28,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#create" data-toggle="tab">
+                        <a class="nav-link <?php if (isset($_POST['submit'])) echo "active show"; ?>" href="#create" data-toggle="tab">
                             <i class="material-icons">create</i> Create container
                             <div class="ripple-container"></div>
                         </a>
@@ -39,7 +39,7 @@
     </div>
     <div class="card-body">
         <div class="tab-content">
-            <div class="tab-pane active" id="info">
+            <div class="tab-pane <?php if (!isset($_POST['submit'])) echo "active show"; ?>" id="info">
                 <?php
                     include_once("ImageInfoDisplay.php");
                 ?>
@@ -49,7 +49,7 @@
                     include_once ("ImageHistoryDisplay.php");
                 ?>
             </div>
-            <div class="tab-pane" id="create">
+            <div class="tab-pane <?php if (isset($_POST['submit'])) echo "active show"; ?>" id="create">
                 <?php
                     include_once ('ContainerCreatingFromImageForm.php');
                 ?>

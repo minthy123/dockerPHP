@@ -40,22 +40,12 @@
             $this -> commands = $commands;
         }
 
-        function getCommands() {
+        function getCommands() : array {
             return $this->commands;
         }
 
         function addCommand($command) {
             array_push($this->commands, $command);
         }
-
-        function containCmdFROM() {
-            foreach ($commands as $command) {
-                if ($command->getCmmd() === "FROM") {
-                    return true;
-                }
-            }
-
-            return false;
-        } 
     }
 ?>

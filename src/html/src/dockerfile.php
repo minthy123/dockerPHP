@@ -32,9 +32,6 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
   <!-- CSS Files -->
   <link href="../assets/css/material-dashboard.css?v=2.1.1" rel="stylesheet" />
-  <!-- CSS Just for demo purpose, don't include it in your project -->
-  <link href="../assets/demo/demo.css" rel="stylesheet" />
-
   <?php include_once('script.html'); ?>
 </head>
 
@@ -76,31 +73,22 @@
         <div class="row">
             <div class="col-md-3"></div>
             <div class="col-md-6">
+              <div class="col-md-12">
               <div class="card">
                 <div class="card-header card-header-primary">
                   <h4 class="card-title">Create a new docker file</h4>
                   <p class="card-category"></p>
                 </div>
-                <div class="card-body">
-                      <?php
-                        include('dockerfile/DockerChoosingDisplay.php');
-                      ?>
-                </div>
+                  <?php
+                    include('dockerfile/DockerChoosingDisplay.php');
+                  ?>
               </div>
+            </div>
             </div>
           </div>  
         </div>
       </div>
-      <footer class="footer">
-        <div class="container-fluid">
-          <div class="copyright float-right">
-            &copy;
-            <script>
-              document.write(new Date().getFullYear())
-            </script>
-          </div>
-        </div>
-      </footer>
+        <?php include_once ("Footer.php"); ?>
     </div>
   </div>
 </body>

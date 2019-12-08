@@ -1,4 +1,6 @@
 <?php
+//    include_once ("Host.php");
+
     class Config {
         private $projectName;
         private $version;
@@ -6,6 +8,9 @@
 		private $dockerfileFolder;
 		private $dockerSocketPath;
         private $dockerCount;
+        private $portTerminal;
+        private $portExecContainer;
+//        private $hosts;
 
         public function __construct() {
             //no construct
@@ -20,6 +25,17 @@
             $instance->setDockerfileFolder($obj['dockerfile_folder']);
             $instance->setDockerCount($obj['docker_count']);
             $instance->setDockerSocketPath($obj['docker_unix_socket']);
+            $instance->setPortTerminal($obj['terminal_port']);
+            $instance->setPortExecContainer($obj['terminal_docker_exec_port']);
+
+//            if (!is_null($obj['hosts']) && !empty($obj['hosts'])) {
+//                $hosts = [];
+//                foreach ($obj['hosts'] as $host) {
+//                    array_push($hosts, Host::fromJsonObjects($host));
+//                }
+//
+//                $instance->setHosts($hosts);
+//            }
 
             return $instance;
         }
@@ -144,18 +160,81 @@
 				return $this;
 		}
 
+        /**
+         * @return mixed
+         */
+        public function getPortTerminal()
+        {
+            return $this->portTerminal;
+        }
+
+        /**
+         * @param mixed $portTerminal
+         */
+        public function setPortTerminal($portTerminal): void
+        {
+            $this->portTerminal = $portTerminal;
+        }
+
+        /**
+         * @return mixed
+         */
+        public function getPortExecContainer()
+        {
+            return $this->portExecContainer;
+        }
+
+        /**
+         * @param mixed $portExecContainer
+         */
+        public function setPortExecContainer($portExecContainer): void
+        {
+            $this->portExecContainer = $portExecContainer;
+        }
+
+
+        /**
+         * @return mixed
+         */
+//        public function getHosts()
+//        {
+//            return $this->hosts;
+//        }
+//
+//        /**
+//         * @param mixed $hosts
+//         */
+//        public function setHosts($hosts): void
+//        {
+//            $this->hosts = $hosts;
+//        }
+
+        public function increaseDockerCount() : void {
+            $this->setDockerCount($this->getDockerCount() + 1);
+        }
+
+
 		public function toJson() {
 			$obj = [];
 
 			$obj['project_name'] = $this->getProjectName();
-			$obj['version'] =$this->setVersion();
+			$obj['version'] =$this->getVersion();
 
-			$obj['upload_folder'] = $this->setUploadFolder();
-			$obj['dockerfile_folder'] = $this->setDockerfileFolder();
-			$obj['docker_count'] = $this->setDockerCount();
-			$obj['docker_unix_socket'] = $this->setDockerSocketPath();
+			$obj['upload_folder'] = $this->getUploadFolder();
+			$obj['dockerfile_folder'] = $this->getDockerfileFolder();
+			$obj['docker_count'] = $this->getDockerCount();
+			$obj['docker_unix_socket'] = $this->getDockerSocketPath();
+			$obj['terminal_port'] = $this->getPortTerminal();
+			$obj['terminal_docker_exec_port'] = $this->getPortExecContainer();
 
-			return json_encode($obj);
+//            $hostStrings = [];
+//            foreach ($this->hosts as $host) {
+//                array_push($hostStrings, $host->toArray());
+//            }
+//
+//            $obj['hosts'] = $hostStrings;
+
+			return json_encode($obj, JSON_PRETTY_PRINT);
 		}
     }
 ?>

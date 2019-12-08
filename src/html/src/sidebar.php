@@ -44,6 +44,13 @@
             <p>Terminal</p>
           </a>
         </li>
+
+<!--          <li class="nav-item --><?php //if ($GLOBALS['toogle'] == 'library') echo "active"; ?><!--">-->
+<!--              <a class="nav-link" href="./LibraryDisplay.php">-->
+<!--                  <i class="material-icons">content_paste</i>-->
+<!--                  <p>Library</p>-->
+<!--              </a>-->
+<!--          </li>-->
       </ul>
     </div>
 </div>
