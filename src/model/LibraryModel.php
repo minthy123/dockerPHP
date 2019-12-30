@@ -6,9 +6,11 @@
         private $isGPU;
 
         private $parentLibraries;
+        private $childLibraries;
 
         public function __construct() {
             $this->setParentLibraries(array());
+            $this->setChildLibraries(array());
         }
 
         public static function fromEntity(LibraryEntity $libraryEntity) : self {
@@ -17,6 +19,7 @@
             $instance->setCommands($libraryEntity->getCommands());
             $instance->setId($libraryEntity->getId());
             $instance->setName($libraryEntity->getName());
+            $instance->setIsGPU($libraryEntity->getIsGPU());
 
             return $instance;
         }
@@ -104,6 +107,28 @@
         public function addParentLibrary(self $parentLibrary) {
             array_push($this->parentLibraries, $parentLibrary);
         }
+
+        public function addChildLibrary(self $childLibrary) {
+            array_push($this->childLibraries, $childLibrary);
+        }
+
+        /**
+         * @return mixed
+         */
+        public function getChildLibraries()
+        {
+            return $this->childLibraries;
+        }
+
+        /**
+         * @param mixed $childLibraries
+         */
+        public function setChildLibraries($childLibraries): void
+        {
+            $this->childLibraries = $childLibraries;
+        }
+
+
 
         public function isOS() : bool
         {

@@ -1,33 +1,33 @@
-<table class="table table-striped table-hover">
+<table class="table table-striped table-hover" style="word-break: break-all">
     <tr>
-        <td>ID</td><td><?php echo $GLOBALS['container']->getId();  ?></td>
+        <td style="width: 15%">ID</td><td><?php echo $container->getId();  ?></td>
     </tr>
     <tr>
-        <td>Name</td><td><?php echo $GLOBALS['container']->getName();  ?></td>
+        <td>Name</td><td><?php echo $container->getName();  ?></td>
     </tr>
     <tr>
-        <td>Command</td><td><?php echo $GLOBALS['container']->getCommand();  ?></td>
+        <td>Command</td><td><?php echo $container->getCmd();  ?></td>
     </tr>
     <tr>
-        <td>Status</td><td><?php echo $GLOBALS['container']->getStatus();  ?></td>
+        <td>Status</td><td><?php echo $container->getState();  ?></td>
     </tr>
     <tr>
-        <td>Started at</td><td><?php echo $GLOBALS['container']->getStartedAt();  ?></td>
+        <td>Started at</td><td><?php echo $container->getStartedAt();  ?></td>
     </tr>
     <tr>
-        <td>Finished at</td><td><?php echo $GLOBALS['container']->getFinishedAt();  ?></td>
+        <td>Finished at</td><td><?php echo $container->getFinishedAt();  ?></td>
     </tr>
     <tr>
-        <td>Entrypoint</td><td><?php echo $GLOBALS['container']->getEntryPoint();  ?></td>
+        <td>Entrypoint</td><td><?php echo $container->getEntryPoint();  ?></td>
     </tr>
     <tr>
-        <td>Working dir</td><td><?php echo $GLOBALS['container']->getWorkingDir();  ?></td>
+        <td>Working dir</td><td><?php echo $container->getWorkingDir();  ?></td>
     </tr>
     <tr>
         <td>Env</td>
         <td>
             <?php
-                foreach ($GLOBALS['container']->getEnv() as $env) {
+                foreach ($container->getEnv() as $env) {
                     echo $env."<br>";
                 }
             ?>
@@ -35,33 +35,33 @@
     </tr>
 
     <tr>
-        <td>Image</td><td><?php echo $GLOBALS['container']->getImage()->getName();  ?></td>
+        <td>Image</td><td><?php echo $container->getImage()->getName();  ?></td>
     </tr>
 
     <tr>
-        <td>ImageId</td><td><?php echo $GLOBALS['container']->getImage()->getId();  ?></td>
+        <td>ImageId</td><td><?php echo $container->getImage()->getId();  ?></td>
     </tr>
 
     <tr>
-        <td>Restart Count</td><td><?php echo $GLOBALS['container']->getRestartCount();  ?></td>
+        <td>Restart Count</td><td><?php echo $container->getRestartCount();  ?></td>
     </tr>
 
     <tr>
-        <td>Hostname Path</td><td><?php echo $GLOBALS['container']->getHostnamePath();  ?></td>
+        <td>Hostname Path</td><td><?php echo $container->getHostnamePath();  ?></td>
     </tr>
     <tr>
-        <td>Hosts Path</td><td><?php echo $GLOBALS['container']->getHostsPath();  ?></td>
-    </tr>
-
-    <tr>
-        <td>Log Path</td><td><?php echo $GLOBALS['container']->getLogPath();  ?></td>
-    </tr>
-    <tr>
-        <td>Driver</td><td><?php echo $GLOBALS['container']->getDriver();  ?></td>
+        <td>Hosts Path</td><td><?php echo $container->getHostsPath();  ?></td>
     </tr>
 
     <tr>
-        <td>Platform</td><td><?php echo $GLOBALS['container']->getPlatform();  ?></td>
+        <td>Log Path</td><td><?php echo $container->getLogPath();  ?></td>
+    </tr>
+    <tr>
+        <td>Driver</td><td><?php echo $container->getDriver();  ?></td>
+    </tr>
+
+    <tr>
+        <td>Platform</td><td><?php echo $container->getPlatform();  ?></td>
     </tr>
 
 </table>

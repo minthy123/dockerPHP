@@ -1,11 +1,12 @@
 <?php
     include_once ('LibraryService.php');
     include_once ('ConfigService.php');
-    include_once ('/var/www/html/src/enum/Instruction.php');
-    include_once ('/var/www/html/src/utils/Utils.php');
-    include_once ('/var/www/html/src/model/Dockerfile.php');
+    include_once (__DIR__.'/../enum/Instruction.php');
+    include_once (__DIR__.'/../utils/Utils.php');
+    include_once (__DIR__.'/../model/Dockerfile.php');
 
     class DockerfileService {
+        private const DOCKERFILE = "dockerfile";
         private $libraryService;
 
         function __construct(){
@@ -47,15 +48,13 @@
                 }
             }
 
-//            $dockerfile->addCommand("tail -f /dev/null");
             return $dockerfile;
         }
 
         function saveDockerfile(Dockerfile $dockerfile) {
             $this->config->increaseDockerCount();
             ConfigService::modifyConfig($this->config);
-            $filename = $this->config->getDockerfileFolder() . 'dockerfile'. $this->config->getDockerCount();
-
+            $filename = $this->config->getDockerfileFolder() . self::DOCKERFILE . $this->config->getDockerCount();
 
             $dockerfile->setDockerfilePath($filename);
 
@@ -64,7 +63,7 @@
 
         function createDockerfile($osId, $libraryIds) {
             $isGPU = false;
-            $libraries = $this->libraryService->getLibrariesFromOS($osId, $libraryIds, $isGPU);
+            $libraries = $this->libraryService->getLibrariesFromOS1($osId, $libraryIds, $isGPU);
 
             $dockerfile = $this->createCommand($libraries);
             $dockerfile->setIsGPU($isGPU);
@@ -75,7 +74,6 @@
 
         function uploadFileToDockerfile(Dockerfile $dockerfile, array $fileUpload) {
             $filename = $this->config->getUploadFolder(). $fileUpload['name'];
-//            Utils::saveFile($fileUpload['tmp_name'], $filename);
             move_uploaded_file($fileUpload['tmp_name'], $filename);
 
             $dockerfile->setUploadFilePath($fileUpload['name']);

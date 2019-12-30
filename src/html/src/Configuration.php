@@ -40,6 +40,9 @@ session_start();
   <link href="../assets/css/material-dashboard.css?v=2.1.1" rel="stylesheet" />
   <script src="../assets/js/md5.min.js"></script>
   <?php include_once('script.html'); ?>
+    <link rel="stylesheet" href="../highlightjs/styles/default.css">
+    <script src="../highlightjs/highlight.pack.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
 </head>
 
 <body class="">
@@ -60,16 +63,6 @@ session_start();
             ?>
         </div>
 <!--      </div>-->
-      <footer class="footer">
-        <div class="container-fluid">
-          <div class="copyright float-right">
-            &copy;
-            <script>
-              document.write(new Date().getFullYear())
-            </script>
-          </div>
-        </div>
-      </footer>
     </div>
   </div>
 </body>

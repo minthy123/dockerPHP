@@ -74,9 +74,11 @@
       <div class="content">
         <div class="container-fluid">
         <!-- Main content -->
-            <?php
-                include_once ("DashboardDetail.php");
-            ?>
+            <div class="col-md-9 ml-auto mr-auto">
+                <?php
+                    include_once ("DashboardDetail.php");
+                ?>
+            </div>
         </div>
       </div>
       <footer class="footer">

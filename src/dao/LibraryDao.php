@@ -1,6 +1,6 @@
 <?php 
     include_once('Database.php');
-    include_once('/var/www/html/src/entity/LibraryEntity.php');
+    include_once(__DIR__.'/../entity/LibraryEntity.php');
 
     class LibraryDao{
        
@@ -81,6 +81,40 @@
 
             $stmt->execute();
             $db->close();
+        }
+
+        function editLibrary(LibraryEntity $libraryEntity) {
+            $db = new Database();
+            $sqlQuery = "UPDATE library SET 
+                    name=:name, isGPU=:isGPU
+                   WHERE id=:libraryId";
+
+            $stmt = $db->prepare($sqlQuery);
+            $stmt->bindParam(":libraryId", $libraryEntity->getId());
+            $stmt->bindParam(":name", $libraryEntity->getName());
+            $stmt->bindParam(":isGPU", $libraryEntity->getIsGPU());
+
+            $stmt->execute();
+            $db->close();
+        }
+
+        function getOperatingSystemByBaseImageName(string $baseImageName) {
+            $db = new Database();
+            $sqlQuery = "SELECT l.id, l.name, l.isGPU FROM library as l JOIN command as c ON l.id = c.library_id
+                        WHERE c.docker_instructor='FROM' AND c.cmd=:image_name";
+
+            $stmt = $db->prepare($sqlQuery);
+            $stmt->bindParam(":image_name", $baseImageName);
+
+            $ret = $stmt->execute();
+
+            $result = null;
+            while ($row = $ret->fetchArray(SQLITE3_ASSOC) ) {
+                $result = new LibraryEntity($row['id'], $row['name'], $row['isGPU']);
+            }
+
+            $db->close();
+            return $result;
         }
 
         // function getByLibraryIds($libraryIds) {

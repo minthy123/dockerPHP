@@ -1,12 +1,12 @@
 <?php
-    require_once("/var/www/html/src/service/LibraryService.php");
-    require_once("/var/www/html/src/model/OsAndLibraries.php");
+    require_once(__DIR__."/../../../service/LibraryService.php");
+    require_once(__DIR__."/../../../model/OsAndLibraries.php");
 
     $libraryService = new LibraryService();
     $GLOBALS['osAndLibraries'] = $libraryService->getLibrariesSeparatedByOS();
 ?>
 <div class="card-body">
-<div id="choosing-os"><label>1) Please choose OS:</label><br>
+<div id="choosing-os"><label>1) Choose operating system:</label><br>
     <form action="" method="get" id="choosing-os-1">
         <?php
             function chooseOSDefault(array $osLibraries, $osId) : int {
@@ -41,8 +41,9 @@
 </div>
 
 <div id="choosing-libraries">
-    <label>2) Choosing libraries: </label><br>
+    <label>2) Choose libraries: </label><br>
     <form action="dockerfile_creation.php" method="post" id="form-1" enctype="multipart/form-data">
+        <div class="row">
 <!--        <select name="library-ids[]" multiple size = 6>-->
             <?php
                 if (isset($_GET['os-id'])) {
@@ -56,6 +57,7 @@
                     $numberOfLibraries = count($osLibrary->getLibraries());
 
                     for ($i=0; $i<$numberOfLibraries; $i++) {
+                        echo "<div class='col-md-4'>";
                         $library = $osLibrary->getLibraries()[$i];
                         //echo $library->getName();
                         echo "<div class=\"form-check form-check-inline\">
@@ -66,13 +68,15 @@
                                     </span>
                                 </label>
                             </div>";
+                        echo "</div>";
 
                         if ($i != $numberOfLibraries && ($i+1) % 3 === 0) {
-                            echo "<br>";
+                            echo "</div><div class='row'>";
                         }
                     }
                 }
             ?>
+        </div>
 
 
         <div id="accordion" role="tablist">
@@ -115,6 +119,11 @@
                             <label for="command-input" class="bmd-label-floating">5) Input command to run the file:</label>
                             <input type="text" class="form-control" id="command-input" name="command-input">
                         </div>
+
+                        <div class="form-group">
+                            <label for="working-dir" class="bmd-label-floating">6) Input working dir: </label>
+                            <input type="text" class="form-control" id="working-dir" name="working-dir">
+                        </div>
 <!--                        <br>5) Input command to run the file:</br>-->
 <!--                        <input type="text" name="command-input" placeholder="Command"><br>-->
                     </div>
@@ -128,7 +137,12 @@
 </div>
 </div>
 <div class="card-footer">
-    <button name="submit" type="submit" value="submit" form="form-1" class="btn btn-primary">Submit</button>
+    <button name="submit" type="submit" value="submit" form="form-1" class="btn btn-rose">
+        Submit
+        <span class="btn-label btn-label-right">
+            <i class="material-icons">keyboard_arrow_right</i>
+          </span>
+    </button>
 </div>
 
 <script>

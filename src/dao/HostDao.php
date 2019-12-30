@@ -1,6 +1,6 @@
 <?php 
     include_once('Database.php');
-    include_once('/var/www/html/src/entity/HostEntity.php');
+    include_once(__DIR__.'/../entity/HostEntity.php');
 
     class HostDao {
         
@@ -42,7 +42,7 @@
 
         function addHost(HostEntity $hostEntity) : void {
             $db = new Database();
-            $sqlQuery = "INSERT INTO host(name, docker_socket_path, ip, port) 
+            $sqlQuery = "INSERT INTO host(name, ip, port) 
                     VALUES (:name, :ip, :port)";
 
             $stmt = $db->prepare($sqlQuery);
@@ -81,6 +81,17 @@
             $stmt->execute();
 
             $db->close();
+        }
+
+        function countHost() : int {
+            $db = new Database();
+            $sqlQuery = "SELECT COUNT(*) FROM host";
+
+            $result = $db->querySingle($sqlQuery);
+
+            $db->close();
+
+            return $result;
         }
     }
 ?>

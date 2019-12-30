@@ -12,12 +12,14 @@
 
 		private $uploadFilePath;
 		private $dockerfilePath;
+		private $workingDir;
 
 		function __construct() {
             $this->runs = [];
             $this->expose = [];
             $this->cmd = new CommandEntity(0, Instruction::CMD, self::EMPTY_STRING, 0);
             $this->uploadFilePath = null;
+            $this->workingDir = "/home";
 		}
 
         function setFrom($from){
@@ -70,7 +72,7 @@
 		}
 		
 		function setImageName($imageName) {
-            $this -> imageName = $imageName;
+            $this -> imageName = $imageName == null || empty($imageName) ? "test_image".ConfigService::loadConfig()->getDockerCount() : $imageName;
         }
 
         function getImageName() {
@@ -112,6 +114,22 @@
             $this->dockerfilePath = $dockerfilePath;
         }
 
+        /**
+         * @return string
+         */
+        public function getWorkingDir(): string
+        {
+            return $this->workingDir;
+        }
+
+        /**
+         * @param string $workingDir
+         */
+        public function setWorkingDir(string $workingDir): void
+        {
+            $this->workingDir = $workingDir;
+        }
+
 		function toString($forHTML) {
             $endline = $forHTML ? '<br>' : PHP_EOL;
 
@@ -124,8 +142,8 @@
             $result .= $endline;
 
             if (!is_null($this->uploadFilePath)) {
-                $result .= (new CommandEntity(0, Instruction::WORKDIR, '/home', 0))->toString() . $endline;
-                $result .= (new CommandEntity(0, Instruction::COPY, $this->uploadFilePath.' /home/', 0))->toString() . $endline;
+                $result .= (new CommandEntity(-1, Instruction::WORKDIR, $this->getWorkingDir(), -1))->toString() . $endline;
+                $result .= (new CommandEntity(-1, Instruction::COPY, $this->uploadFilePath.' '.$this->getWorkingDir(), -1))->toString() . $endline;
                 $result .= $endline;
             }
 

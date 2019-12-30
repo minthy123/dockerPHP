@@ -10,23 +10,13 @@
     </thead>
     <tbody>
         <?php
-            require_once("/var/www/html/src/model/ImageHistory.php");
-            require_once("/var/www/html/src/restclient/ImageClient.php");
-
-            $imageHistories = null;
-
-            if (isset($GLOBALS['image']))  {
-                $imageClient = new ImageClient();
-                $imageHistories = $imageClient->getImageHistory($GLOBALS['image']->getId());
-            }  else die();
-
-            foreach ($imageHistories as $imageHistory) {
+            foreach ($GLOBALS['image']->getHistories() as $imageHistory) {
                 echo "<tr>\n";
                 echo "<td class='wrap-td'>". substr($imageHistory->getId(), 0, 12)."</a></td>\n";
-                echo "<td class='wrap-td'>".$imageHistory->getCreatedSince()."</td>\n";
+                echo "<td class='wrap-td'>".date("Y-m-d H:i:s", $imageHistory->getCreatedSince())."</td>\n";
                 echo "<td class='wrap-td'>".$imageHistory->getCreatedBy()."</td>\n";
                 echo "<td class='wrap-td'>".$imageHistory->getSize()."</td>\n";
-                echo "<td class='wrap-td'>".$imageHistory->getComment()."</td>\n";
+                echo "<td class='wrap-td'>".$imageHistory->getTag()."</td>\n";
                 echo "</tr>\n";
             }
         ?>

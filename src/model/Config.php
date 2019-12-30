@@ -1,6 +1,4 @@
 <?php
-//    include_once ("Host.php");
-
     class Config {
         private $projectName;
         private $version;
@@ -10,7 +8,6 @@
         private $dockerCount;
         private $portTerminal;
         private $portExecContainer;
-//        private $hosts;
 
         public function __construct() {
             //no construct
@@ -27,15 +24,6 @@
             $instance->setDockerSocketPath($obj['docker_unix_socket']);
             $instance->setPortTerminal($obj['terminal_port']);
             $instance->setPortExecContainer($obj['terminal_docker_exec_port']);
-
-//            if (!is_null($obj['hosts']) && !empty($obj['hosts'])) {
-//                $hosts = [];
-//                foreach ($obj['hosts'] as $host) {
-//                    array_push($hosts, Host::fromJsonObjects($host));
-//                }
-//
-//                $instance->setHosts($hosts);
-//            }
 
             return $instance;
         }
@@ -192,23 +180,6 @@
             $this->portExecContainer = $portExecContainer;
         }
 
-
-        /**
-         * @return mixed
-         */
-//        public function getHosts()
-//        {
-//            return $this->hosts;
-//        }
-//
-//        /**
-//         * @param mixed $hosts
-//         */
-//        public function setHosts($hosts): void
-//        {
-//            $this->hosts = $hosts;
-//        }
-
         public function increaseDockerCount() : void {
             $this->setDockerCount($this->getDockerCount() + 1);
         }
@@ -226,13 +197,6 @@
 			$obj['docker_unix_socket'] = $this->getDockerSocketPath();
 			$obj['terminal_port'] = $this->getPortTerminal();
 			$obj['terminal_docker_exec_port'] = $this->getPortExecContainer();
-
-//            $hostStrings = [];
-//            foreach ($this->hosts as $host) {
-//                array_push($hostStrings, $host->toArray());
-//            }
-//
-//            $obj['hosts'] = $hostStrings;
 
 			return json_encode($obj, JSON_PRETTY_PRINT);
 		}

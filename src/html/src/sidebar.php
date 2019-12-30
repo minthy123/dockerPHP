@@ -40,8 +40,8 @@
 
         <li class="nav-item <?php if ($GLOBALS['toogle'] == 'terminal') echo "active"; ?>">
           <a class="nav-link" href="./Terminal.php">
-            <i class="material-icons">content_paste</i>
-            <p>Terminal</p>
+            <i class="fa fa-terminal material-icons"></i>
+              <p>Terminal</p>
           </a>
         </li>
 
@@ -58,7 +58,7 @@
 
 <?php
   if (!isset($GLOBALS['config'])) {
-    include_once ("/var/www/html/src/service/ConfigService.php");
+    include_once (__DIR__."/../../service/ConfigService.php");
 
     $GLOBALS['config'] = ConfigService::loadConfig();
   }

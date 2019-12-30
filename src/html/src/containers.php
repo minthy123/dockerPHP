@@ -1,3 +1,4 @@
+<?php include_once(__DIR__."/host/HostChoosing.php"); ?>
 <!--
 =========================================================
  Material Dashboard - v2.1.1
@@ -73,124 +74,15 @@
       <div class="content">
         <div class="container-fluid">
           <div class="row">
-              <div class="col-md-1"></div>
-            <div class="col-md-10">
-              <div class="card">
-                <div class="card-header card-header-rose card-header-icon">
-                  <div class="card-icon">
-                    <i class="material-icons">mail_outline</i>
-                  </div>
-                  <h4 class="card-title">Containers</h4>
-                  <p class="card-category"></p>
-                </div>
-                <div class="card-body">
-                  <table class="table table-striped table-hover">
-                    <thead>
-                      <tr>
-                        <th><a hred="#">ID</a></th>
-                        <th><a hred="#">NAME</a></th>
-                        <th><a hred="#">IMAGE</a></th>
-                        <!-- <th><a hred="#">COMMAND</a></th> -->
-                        <!-- <th><a hred="#">PORT</a></th> -->
-                        <th><a hred="#">STATE</a></th>
-                        <th><a hred="#">STATUS</a></th>
-                        <th><a hred="#">Operation</a></th>
-                      </tr>
-                    </thead>
-
-                      <tbody>
-                        <?php
-                          include_once('/var/www/html/src/restclient/ContainerClient.php');
-
-                          $comtainerClient = new ContainerClient();
-                          $containers = $comtainerClient->getAllContainers();
-
-                          foreach ($containers as $container) {
-                            echo "<tr>";
-                              echo "\n";
-                            echo "<td><a href=\"./container.php?container-id=".$container->getId()."\">". substr($container->getId(), 0, 12)."</a></td>";
-                            echo "\n";
-                            echo "<td class='wrap-td'>".$container->getName()."</td>";
-                              echo "\n";
-                            echo "<td class='wrap-td'>".$container->getImage()->getName()."</td>";
-                              echo "\n";
-                            echo "<td class='wrap-td'>".$container->getState()."</td>";
-                              echo "\n";
-                            echo "<td class='wrap-td'>".$container->getStatus()."</td>";
-                              echo "\n";
-
-                            echo "<td class=\"td-actions\">";
-                            if ($container->getState() == "exited") {
-                              echo "<button type=\"button\" rel=\"tooltip\" class=\"btn btn-success\" onclick=startContainer('". str_replace("sha256:", "", $container->getId()) ."')><i class=\"material-icons\">play_arrow</i></button>";
-                            } else if ($container->getState() == "running") {
-                              echo "<button type=\"button\" rel=\"tooltip\" class=\"btn btn-danger\" onclick=stopContainer('". str_replace("sha256:", "", $container->getId()) ."')><i class=\"material-icons\">pause</i></button>";
-
-                            }
-                              echo "\n";
-                            echo "<button type=\"button\" rel=\"tooltip\" class=\"btn btn-info\" onclick=restartContainer('". $container->getId(). "')><i class=\"material-icons\">loop</i></button>";
-                              echo "\n";
-                            echo "<button type=\"button\" rel=\"tooltip\" class=\"btn btn-danger\" onclick=deleteContainer('". $container->getId(). "')><i class=\"material-icons\">close</i></button>";
-                              echo "\n";
-                            echo "</td>";
-                              echo "\n";
-                            echo "</tr>";
-                          }
-                        ?>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
+            <div class="col-md-9 ml-auto mr-auto">
+                <?php include_once ("container/ContainerList.php");?>
             </div>
-          </div>
+        </div>
         </div>
       </div>
         <?php include_once ("Footer.php"); ?>
     </div>
   </div>
-
-  <script type="text/javascript"> 
-    function stopContainer(containerId) {
-        executeContainer(containerId, 'STOP');
-      }
-
-      function startContainer(containerId) {
-        executeContainer(containerId, 'START');
-      }
-
-    function deleteContainer(containerId) {
-        executeContainer(containerId, 'DELETE');
-    }
-
-    function restartContainer(containerId) {
-        executeContainer(containerId, 'RESTART');
-    }
-
-    function executeContainer(containerId, operation) {
-      $.get('/src/restclient/ContainerClient.php', {'container-id' : containerId, 'operation': operation})
-            .done(function(data) {
-                //console.log(data);
-                location.reload(true);
-            });
-    }
-
-    $('.wrap-td').each(function () {
-        var text = $(this).text();
-
-        const LENGTH_TRIM = 40;
-
-        if (text.length >= LENGTH_TRIM) {
-            $(this).attr('data-toggle', 'tooltip')
-                .attr('data-placement', 'top')
-                .attr('title', text)
-                .text($.trim(text).substring(0, LENGTH_TRIM) + "...");
-        }
-    });
-
-    $(function () {
-        $('[data-toggle="tooltip"]').tooltip();
-    });
-  </script>
-  
 </body>
 
 </html>

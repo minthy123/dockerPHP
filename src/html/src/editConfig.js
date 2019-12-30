@@ -8,27 +8,36 @@ $('.row-data').click(function(e) {
     $(this).addClass('bg-warning').css('padding','5px');
 
     $(this).focus();
-})
+});
 
 
 $(document).on("focusout",".row-data.bg-warning",function(e){
     e.preventDefault();
-
-    var row_id = $(this).closest('tr').attr('row_id'); 
-    
-    var row_div = $(this)				
+    $(this)
         .removeClass('bg-warning') //add bg css
-        .css('padding','')
+        .css('padding','');
 
-    var col_val = row_div.html(); 
-    console.log(col_val);
+    var arr = {};
 
-    //var arr = {};
-    //arr[col_name] = col_val;
+    $(".row-data").each(function () {
+        var name = $(this).attr('name');
+        var value = $(this).text();
+        if (name === null) return;
 
-    //use the "arr"	object for your ajax call
-    //$.extend(arr, {row_id:row_id});
+        arr[name] = value;
 
-    //out put to show
-    //$('.post_msg').html( '<pre class="bg-success">'+JSON.stringify(arr, null, 2) +'</pre>');
-})
+    });
+
+    console.log(arr);
+
+    $.ajax({
+        type: 'PUT',
+        url: '/src/rest/ConfigRest.php',
+        data: arr
+    })
+        .done(function(data) {
+            console.log('Complete response = ' + data);
+        });
+
+    $('#config').load(window.location.href + " #config");
+});

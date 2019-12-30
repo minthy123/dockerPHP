@@ -1,6 +1,7 @@
 <?php
-    include_once ("/var/www/html/src/entity/HostEntity.php");
-    include_once ("/var/www/html/src/dao/HostDao.php");
+    include_once (__DIR__."/../entity/HostEntity.php");
+    include_once (__DIR__."/../dao/HostDao.php");
+    include_once (__DIR__."/../restclient/DockerClient.php");
 
     class HostService {
         private $hostDao;
@@ -17,48 +18,33 @@
             return $this->hostDao->getAll();
         }
 
-        public function getHostById(int $hostId) : HostEntity {
+        public function getHostById(?int $hostId) : HostEntity {
+            if (is_null($hostId))
+                return null;
+
             return $this->hostDao->getHostById($hostId);
         }
 
         public function editHost(HostEntity $hostEntity) : void {
-            $this->editHost($hostEntity);
+            if ($hostEntity == null) return;
+
+            $this->hostDao->editHost($hostEntity);
         }
 
-        public function removeHostById(int $hostId) : void {
+        public function removeHostById(?int $hostId) : void {
+            if ($hostId == null) return;
+
             $this->hostDao->removeHost($hostId);
         }
-    }
 
-    if ($_SERVER['REQUEST_METHOD'] == "POST") {
-        $hostService = new HostService();
+        public function countHost() : int {
+            return $this->hostDao->countHost();
+        }
 
-        $hostEntity = new HostEntity();
-//        $hostEntity->setDockerSocketPath($_POST['docker_socket_path']);
-        $hostEntity->setIp($_POST['ip']);
-        $hostEntity->setPort($_POST['port']);
-        $hostEntity->setName($_POST['name']);
-
-        $hostService->addHost($hostEntity);
-    }
-
-    if ($_SERVER['REQUEST_METHOD'] == "DELETE") {
-        $hostService = new HostService();
-        $hostService->removeHostById($_GET['id']);
-    }
-
-    if ($_SERVER['REQUEST_METHOD'] == "PUT") {
-        parse_str(file_get_contents('php://input'), $_PUT);
-        $hostService = new HostService();
-
-        $hostEntity = new HostEntity();
-//        $hostEntity->setDockerSocketPath($_PUT['docker_socket_path']);
-        $hostEntity->setIp($_PUT['ip']);
-        $hostEntity->setPort($_PUT['port']);
-        $hostEntity->setName($_PUT['name']);
-        $hostEntity->setId($_PUT['id']);
-
-        $hostService->editHost($hostEntity);
+        public function ping(int $hostId) : int {
+            $dockerClient = new DockerClient(self::getHostById($hostId));
+            return $dockerClient->ping();
+        }
     }
 
 ?>

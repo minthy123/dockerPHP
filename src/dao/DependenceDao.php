@@ -1,6 +1,6 @@
 <?php 
     include_once('Database.php');
-    include_once('/var/www/html/src/entity/DependenceEntity.php');
+    include_once(__DIR__.'/../entity/DependenceEntity.php');
 
     class DependenceDao{
         
@@ -41,6 +41,30 @@
             $stmt->execute();
 
             $db->close();
+        }
+
+        function removeParentOfLibraryId(int $libraryId) {
+            $db = new Database();
+            $sqlQuery = "DELETE FROM dependence WHERE library_id=:library_id";
+
+            $stmt = $db->prepare($sqlQuery);
+            $stmt->bindValue(":library_id", $libraryId);
+            $stmt->execute();
+
+            $db->close();
+        }
+
+        function countDependenceOfLibrary(int $libraryId) {
+            $db = new Database();
+            $sqlQuery = "SELECT COUNT(*) FROM dependence WHERE parent_library_id=:library_id";
+
+            $stmt = $db->prepare($sqlQuery);
+            $stmt->bindValue(":library_id", $libraryId);
+            $ret = $stmt->execute();
+
+            $db->close();
+
+            return ($ret->fetchArray(SQLITE3_ASSOC))[0];
         }
     }
 ?>

@@ -1,6 +1,6 @@
 <?php 
     include_once('Database.php');
-    include_once('/var/www/html/src/entity/CommandEntity.php');
+    include_once(__DIR__.'/../entity/CommandEntity.php');
 
     class CommandDao{
         

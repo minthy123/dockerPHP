@@ -1,4 +1,5 @@
 <?php
+    include_once ('ConfigService.php');
 
     class DockerBuildService {
         static private $DOCKER_BUILD_COMMAND="docker build --rm --no-cache -t <image_name> -f <dockerfile_name> .";
@@ -13,7 +14,7 @@
         }
 
         function handleName($imageName) {
-            return $imageName == null ? "test_image" : $imageName;
+            return $imageName == null || empty($imageName) ? "test_image".ConfigService::loadConfig()->getDockerCount() : $imageName;
         }
 
         function generateDockerBuildCommand(Dockerfile $dockerfile) {

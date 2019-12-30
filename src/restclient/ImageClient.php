@@ -1,6 +1,6 @@
 <?php
-    require_once('/var/www/html/src/model/Image.php');
-    require_once('/var/www/html/src/model/ImageHistory.php');
+    require_once(__DIR__.'/../model/Image.php');
+    require_once(__DIR__.'/../model/ImageHistory.php');
     require_once('DockerClient.php');
 
     class ImageClient {
@@ -11,8 +11,8 @@
         private const IMAGE_INFO = '/images/%s/json';
         private const IMAGE_HISTORY = '/images/%s/history';
 
-        public function __construct() {
-            $this->dockerClient = new DockerClient();
+        public function __construct(?HostEntity $hostEntity = null) {
+            $this->dockerClient = new DockerClient($hostEntity);
         }
 
         public function getAllImages() {
@@ -31,14 +31,14 @@
             return count($result);
         }
 
-        public function getImageInfo($imageId) {
+        public function getImageInfo($imageId) : Image{
             $json = $this->dockerClient->dispatchCommand(
                 sprintf(self::IMAGE_INFO, $imageId));
 
             return Image::fromJSONDetail($json);
         }
 
-        public function getImageHistory($imageId) {
+        public function getImageHistory(string $imageId) : array {
             $result = [];
 
             $jsonArray = $this->dockerClient->dispatchCommand(
@@ -56,13 +56,5 @@
                 sprintf(self::KILL_IMAGE_COMMAND, $id));
         }
 	
-    }
-
-    if (isset($_GET['image-id'])) {
-        $imageClient = new ImageClient();
-
-        if ($_GET['operation'] == 'delete') {
-            $imageClient->deleteImage($_GET['image-id']);
-        }
     }
 ?>

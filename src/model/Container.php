@@ -22,6 +22,7 @@
         private $status;
         private $startedAt;
         private $finishedAt;
+        private $cmd;
 
         private $env;
         private $workingDir;
@@ -91,6 +92,7 @@
             //config
             $image->setName($obj['Config']['Image']);
             $instance->setEnv($obj['Config']['Env']);
+            $instance->setCmd(join(" ",$obj['Config']['Cmd']));
             $instance->setWorkingDir($obj['Config']['WorkingDir']);
             $instance->setEntryPoint($obj['Config']['Entrypoint']);
 
@@ -382,6 +384,22 @@
 
         public function isRunning(){
             return $this->state == "running";
+        }
+
+        /**
+         * @return mixed
+         */
+        public function getCmd()
+        {
+            return $this->cmd;
+        }
+
+        /**
+         * @param mixed $cmd
+         */
+        public function setCmd($cmd): void
+        {
+            $this->cmd = $cmd;
         }
 	}
 

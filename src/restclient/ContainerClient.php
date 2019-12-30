@@ -1,5 +1,5 @@
 <?php
-    require_once('/var/www/html/src/model/Container.php');
+    require_once(__DIR__.'/../model/Container.php');
     require_once('DockerClient.php');
 
     class ContainerClient {
@@ -15,8 +15,8 @@
 
         private $dockerClient;
 
-        public function __construct() {
-            $this->dockerClient = new DockerClient();
+        public function __construct(?HostEntity $hostEntity = null) {
+            $this->dockerClient = new DockerClient($hostEntity);
         }
 
         public function getAllContainers() {
@@ -98,36 +98,6 @@
 
         public function getError() {
             return $this->dockerClient->getCurlError();
-        }
-
-    }
-
-    if (isset($_GET['container-id'])) {
-        $containerClient = new ContainerClient();
-
-        switch ($_GET['operation']) {
-            case 'CHECK' :
-                include_once ("CommandExecution.php");
-                $commandExecution = new CommandExecution();
-                $commandExecution->executeSteam("docker logs -f " .$_GET['container-id']);
-//                $containerClient->logsContainer($_GET['container-id']);
-                break;
-
-            case 'DELETE' :
-                $containerClient->deleteContainer($_GET['container-id']);
-                break;
-
-            case 'START' :
-                $containerClient->startConatiner($_GET['container-id']);
-                break;
-
-            case 'STOP' :
-                $containerClient->stopConatiner($_GET['container-id']);
-                break;
-            
-            case 'RESTART' :
-                $containerClient->restartContainer($_GET['container-id']);
-                break;
         }
 
     }

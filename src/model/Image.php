@@ -13,9 +13,12 @@
 		private $parentId;
 
 		private $env;
+		private $baseImageName;
 		private $exposePorts;
 		private $workingDir;
 		private $entryPoint;
+		private $histories;
+		private $cmd;
 
 		public function __construct() {
 			// no-contruct
@@ -51,7 +54,11 @@
             $instance->setEnv($obj['Config']['Env']);
             $instance->setWorkingDir($obj['Config']['WorkingDir']);
             $instance->setEntryPoint($obj['Config']['Entrypoint']);
-            $instance->setExposePorts(array_keys($obj['Config']['ExposedPorts']));
+            $instance->setCmd(join(" ",$obj['Config']['Cmd']));
+
+            if ($obj['Config']['ExposedPorts'] != null && !empty($obj['Config']['ExposedPorts'])) {
+                $instance->setExposePorts(array_keys($obj['Config']['ExposedPorts']));
+            }
 
             return $instance;
         }
@@ -255,6 +262,63 @@
         {
             $this->parentId = $parentId;
         }
+
+        /**
+         * @return mixed
+         */
+        public function getBaseImageName()
+        {
+            return $this->baseImageName;
+        }
+
+
+        /**
+         * @return mixed
+         */
+        public function getHistories()
+        {
+            return $this->histories;
+        }
+
+        /**
+         * @param mixed $histories
+         */
+        public function setHistories($histories): void
+        {
+            $this->histories = $histories;
+
+            $result = null;
+            $created = 2000000000;
+
+            foreach ($this->histories as $history) {
+                if ($history->getIsNullId() == false) {
+                    if ($created > $history->getCreatedSince()) {
+                        $result = $history->getTag();
+                        $created = $history->getCreatedSince();
+                    }
+                }
+            }
+
+            $this->baseImageName = $result;
+        }
+
+        /**
+         * @return mixed
+         */
+        public function getCmd()
+        {
+            return $this->cmd;
+        }
+
+        /**
+         * @param mixed $cmd
+         */
+        public function setCmd($cmd): void
+        {
+            $this->cmd = $cmd;
+        }
+
+
 
 	}
 

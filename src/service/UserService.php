@@ -1,6 +1,6 @@
 <?php
-    include_once ("/var/www/html/src/entity/UserEntity.php");
-    include_once ("/var/www/html/src/dao/UserDao.php");
+    include_once (__DIR__."/../entity/UserEntity.php");
+    include_once (__DIR__."/../dao/UserDao.php");
 
     class UserService {
         private $userDao;

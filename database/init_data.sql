@@ -60,3 +60,6 @@ INSERT INTO dependence(library_id, parent_library_id) VALUES
 
 INSERT INTO user(username, password) VALUES
 ("admin", "21232f297a57a5a743894a0e4a801fc3");
+
+INSERT INTO host(name, ip, port) VALUES
+("localhost","172.17.0.1", 2375);

@@ -1,5 +1,5 @@
 <?php
-    include_once ("/var/www/html/src/service/UserService.php");
+    include_once (__DIR__."/../../../service/UserService.php");
     $userService = new UserService();
 
     if (isset($_POST['username']) && isset($_POST['password'])) {

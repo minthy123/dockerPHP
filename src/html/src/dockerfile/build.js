@@ -13,10 +13,12 @@ $('#button-build-image').click(function(e) {
     term.fit();
 
     var lastResponseLength = false;
+    var host_id = $( "select#chosen-host option:checked" ).val();
+
     $.ajax({
         type: 'POST',
         url: '/src/restclient/CommandExecution.php',
-        data: {cmd : $('#build-command').text()},
+        data: {cmd : $('#build-command').text(), "host-id": host_id},
         xhrFields:  {
             onprogress: function(e) {
                 var progressResponse;
@@ -35,7 +37,31 @@ $('#button-build-image').click(function(e) {
         }
     })
         .done(function(data) {
-            console.log('Complete response = ' + data);
+            if (data.includes("returned a non-zero code: 127")) {
+                swal({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Something went wrong!'
+                });
+            } else {
+                swal({
+                    title: 'Done',
+                    text: 'Your image was built success. Do you want to check out?',
+                    type: 'success',
+                    showCancelButton: true,
+                    confirmButtonClass: 'btn btn-success',
+                    cancelButtonClass: 'btn btn-danger',
+                    reverseButtons: true,
+                    buttonsStyling: false
+                }).then((result) => {
+                    if (result.value) {
+                        var lastSplash = window.location.href.lastIndexOf('/');
+                        window.location.href = window.location.href.substr(0, lastSplash + 1) + "image.php?host-id=" + host_id + "&image-id=" + $("#image-name").text();
+                    }
+                });
+            }
+
+            //console.log('Complete response = ' + data);
         })
         .fail(function(data)
         {

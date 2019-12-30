@@ -75,10 +75,13 @@
             <div class="col-md-6">
               <div class="col-md-12">
               <div class="card">
-                <div class="card-header card-header-primary">
-                  <h4 class="card-title">Create a new docker file</h4>
-                  <p class="card-category"></p>
-                </div>
+                  <div class="card-header card-header-rose card-header-icon">
+                      <div class="card-icon">
+                          <i class="material-icons">create</i>
+                      </div>
+                      <h4 class="card-title">Create a new Dockerfile</h4>
+                      <p class="card-category"></p>
+                  </div>
                   <?php
                     include('dockerfile/DockerChoosingDisplay.php');
                   ?>

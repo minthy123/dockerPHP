@@ -1,4 +1,4 @@
-function checkLogContainer(containerId) {
+function checkLogContainer(containerId, hostId) {
     Terminal.applyAddon(fit);
     const term = new Terminal({windowsMode: true});
     term.open(document.getElementById('log-container'));
@@ -7,10 +7,11 @@ function checkLogContainer(containerId) {
     var lastResponseLength = false;
     $.ajax({
         type: 'GET',
-        url: '/src/restclient/ContainerClient.php',
+        url: '/src/service/ContainerService.php',
         data: {
             'operation': 'CHECK',
-            'container-id': containerId
+            'container-id': containerId,
+            'host-id': hostId
         },
         xhrFields: {
             onprogress: function (e) {
@@ -34,3 +35,11 @@ function checkLogContainer(containerId) {
             console.log('Error: ', data);
         });
 }
+
+$('#log-1').click(function (e) {
+    e.preventDefault();
+    if ($(this).hasClass('processing')) return;
+    $(this).addClass('processing');
+    setTimeout(function(){
+        checkLogContainer($.urlParam("container-id"), $.urlParam("host-id"))}, 1);
+});

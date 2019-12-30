@@ -12,6 +12,9 @@
         <td>Virtual Size</td><td><?php echo $GLOBALS['image']->getVirtualSize();  ?></td>
     </tr>
     <tr>
+        <td>Cmd</td><td><?php echo $GLOBALS['image']->getCmd();  ?></td>
+    </tr>
+    <tr>
         <td>Author</td><td><?php echo $GLOBALS['image']->getAuthor();  ?></td>
     </tr>
     <tr>
@@ -28,6 +31,10 @@
     </tr>
     <tr>
         <td>Working dir</td><td><?php echo $GLOBALS['image']->getWorkingDir();  ?></td>
+    </tr>
+
+    <tr>
+        <td>Base Image</td><td><?php echo $GLOBALS['image']->getBaseImageName();?></td>
     </tr>
 
     <tr>

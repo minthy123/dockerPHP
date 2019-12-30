@@ -52,7 +52,7 @@
                     <input type="text" name="expose-ports" class="form-control" <?php if (!isEmptyOrNull($_POST['expose-ports'])) echo "value=".$_POST['expose-ports']; ?>>
                 </div>
 
-                <input type="checkbox" name="is-gpu"> Is GPU? <br>
+                <input type="checkbox" name="is-gpu" <?php if ($imageService->isOSNeededGPU($GLOBALS['image'])) echo "checked";?>> Is GPU? <br>
                 <input type="hidden" name="image-name" value="<?php echo $GLOBALS['image']->getName();?>">
             </form>
         </div>
@@ -67,25 +67,28 @@
     if (!isset($_POST['submit'])) {
         die();
     }
-    ?>
+?>
 
 <div id="run-commnad-line">
     <br>Here is the command line:
     <pre>
-            <?php
-                include ("/var/www/html/src/model/DockerRunCommand.php");
+        <?php
+            include (__DIR__."/../../../model/DockerRunCommand.php");
 
-                $dockerRunCommand = new DockerRunCommand();
-                $dockerRunCommand->setContainerName(makeEmptyToNull($_POST['container-name']));
-                $dockerRunCommand->setExposePorts(makeEmptyToNull($_POST['expose-ports']));
-                $dockerRunCommand->setImageName(makeEmptyToNull($_POST['image-name']));
-                $dockerRunCommand->setIsGPU(makeEmptyToNull($_POST['is-gpu']));
-                $dockerRunCommand->setWorkingDir(makeEmptyToNull($_POST['working-dir']));
-                $dockerRunCommand->setCommand(makeEmptyToNull($_POST['command']));
-                echo "<code id=\"cmd-line\" class='bash'>";
-                echo $dockerRunCommand->toString();
-                echo "</code>"
-            ?>
+            $dockerRunCommand = new DockerRunCommand();
+            $dockerRunCommand->setContainerName(makeEmptyToNull($_POST['container-name']));
+            $dockerRunCommand->setExposePorts(makeEmptyToNull($_POST['expose-ports']));
+            $dockerRunCommand->setImageName(makeEmptyToNull($_POST['image-name']));
+            $dockerRunCommand->setIsGPU(makeEmptyToNull($_POST['is-gpu']));
+            $dockerRunCommand->setWorkingDir(makeEmptyToNull($_POST['working-dir']));
+            $dockerRunCommand->setCommand(makeEmptyToNull($_POST['command']));
+            $dockerRunCommand->setHost($chosenHost);
+
+            echo "<code id=\"cmd-line\" class='bash'>";
+
+            echo $dockerRunCommand->toString();
+            echo "</code>"
+        ?>
     </pre>
     <button type="button" class="btn btn-primary" id="execute">Execute</button>
 </div>
@@ -101,15 +104,37 @@
             return;
         $(this).addClass("clicked");
 
+        var hostId = $.urlParam("host-id");
+
         $.post("/src/restclient/CommandExecution.php",
-                {'cmd': $("#cmd-line").text()},
-                function(data) {
-                    var resultDiv = $("#result");
-                    resultDiv.show(function () {
-                        resultDiv.append("Success<br>");
-                        resultDiv.append("Here is your container id: <a href='/src/html/src/container.php?container-id="+ data + "'>" + data + "</a>");
-                    });
+            {'cmd': $("#cmd-line").text(), "host-id" : hostId},
+            function(data) {
+                // var resultDiv = $("#result");
+                // resultDiv.show(function () {
+                //     resultDiv.append("Success<br>");
+                //     var href = "/src/html/src/container.php?container-id="+ data;
+                //     if (hostId != null) {
+                //         href = href + "&host-id=" + hostId;
+                //     }
+                //     resultDiv.append("Here is your container id: <a href='"+href+"'>" + data + "</a>");
+                // });
+
+                swal({
+                    title: 'Done',
+                    text: 'Your container was built successfully. Do you want to check out?',
+                    type: 'success',
+                    showCancelButton: true,
+                    confirmButtonClass: 'btn btn-success',
+                    cancelButtonClass: 'btn btn-danger',
+                    reverseButtons: true,
+                    buttonsStyling: false
+                }).then((result) => {
+                    if (result.value) {
+                        var lastSplash = window.location.href.lastIndexOf('/');
+                        window.location.href = window.location.href.substr(0, lastSplash + 1) + "container.php?host-id=" + hostId + "&container-id=" + data;
+                    }
                 });
+            });
     });
 </script>
 

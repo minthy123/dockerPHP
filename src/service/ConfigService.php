@@ -1,9 +1,9 @@
 <?php
-    include_once ('/var/www/html/src/model/Config.php');
-    include_once ('/var/www/html/src/utils/Utils.php');
+    include_once (__DIR__.'/../model/Config.php');
+    include_once (__DIR__.'/../utils/Utils.php');
 
     class ConfigService {
-        private const CONFIG_FILE_PATH = '/var/www/html/config.json';
+        private const CONFIG_FILE_PATH = __DIR__.'/../../config.json';
         
         public static function loadConfig() : ? Config {
             $content = Utils::readFile(self::CONFIG_FILE_PATH);

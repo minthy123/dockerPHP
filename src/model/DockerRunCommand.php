@@ -11,8 +11,10 @@
         private $imageId;
         private $imageName;
         private $containerId;
+        private $host;
 
         private $runCommand;
+
 
         /**
          * @return mixed
@@ -142,6 +144,22 @@
             $this->imageName = $imageName;
         }
 
+        /**
+         * @return mixed
+         */
+        public function getHost()
+        {
+            return $this->host;
+        }
+
+        /**
+         * @param mixed $host
+         */
+        public function setHost($host): void
+        {
+            $this->host = $host;
+        }
+
 
         public function toString(){
             if (is_null($this->runCommand)) {
@@ -161,6 +179,7 @@
             self::handleExposePorts();
             self::handleWorkingDir();
             self::handleIsGPU();
+//            self::handleHost();
             self::handlePublishPort();
         }
 
@@ -175,7 +194,7 @@
         }
 
         private function handleIsGPU() {
-            $gpu = self::getIsGPU() == false ? "" : "--gpus";
+            $gpu = self::getIsGPU() == false ? "" : "--gpus all";
             self::replaceArgsFromCommand("{gpu}", $gpu);
         }
 
@@ -214,6 +233,12 @@
             $workingDir = self::getWorkingDir() == null ? "" : sprintf("-w %s", $this->workingDir);
 
             self::replaceArgsFromCommand("{working_dir}", $workingDir);
+        }
+
+        private function handleHost() {
+            $host = is_null($this->getHost()) ? "" :
+                sprintf("-H tcp://%s:%d ", $this->getHost()->getIp(), $this->getHost()->getPort());
+            self::replaceArgsFromCommand("{host}", $host);
         }
     }
 ?>

@@ -1,9 +1,9 @@
 <?php
-	include_once ("/var/www/html/src/service/ConfigService.php");
+	include_once (__DIR__."/../service/ConfigService.php");
 
 	class DockerClient {
 
-		private const URL = "http://v1.24%s";
+		private $URL = "http://v1.24%s";
 	    
 	    private $curlClient;
 	    private $curlError = null;
@@ -15,6 +15,8 @@
             if ($hostEntity == null) {
                 $config = ConfigService::loadConfig();
                 curl_setopt($this->curlClient, CURLOPT_UNIX_SOCKET_PATH, $config->getDockerSocketPath());
+            } else {
+                $this->URL = "http://".$hostEntity->getIp().":".$hostEntity->getPort()."%s";
             }
 
 	        curl_setopt($this->curlClient, CURLOPT_RETURNTRANSFER, true);
@@ -25,7 +27,7 @@
 	    }
 
 	    private function generateRequestUri(string $requestPath) {
-	        return sprintf(self::URL, $requestPath);
+	        return sprintf($this->URL, $requestPath);
 	    }
 	    
 	    public function dispatchCommand(string $endpoint, array $parameters = null) {
@@ -135,6 +137,14 @@
 	    public function getCurlError() {
 	        return is_null($this->curlError) ? false : $this->curlError;
 	    }
+
+	    public function ping() : bool {
+            curl_setopt($this->curlClient, CURLOPT_CONNECTTIMEOUT, 10);
+            curl_setopt($this->curlClient, CURLOPT_URL, $this->generateRequestUri("/_ping"));
+            $result = curl_exec($this->curlClient);
+
+            return $result == "OK";
+        }
 	}
 
     function myProgressFunc($ch, $str){

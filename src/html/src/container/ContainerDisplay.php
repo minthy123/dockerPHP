@@ -1,14 +1,17 @@
 <?php
-    require_once("/var/www/html/src/model/Container.php");
-    require_once("/var/www/html/src/restclient/ContainerClient.php");
+    require_once (__DIR__."/../../../model/Container.php");
+    require_once (__DIR__."/../../../restclient/ContainerClient.php");
+    require_once (__DIR__."/../host/HostChoosing.php");
 
     if (isset($_GET['container-id']))  {
-        $containerClient = new ContainerClient();
-        $GLOBALS['container'] = $containerClient->getContainerInfo($_GET['container-id']);
+        $containerClient = new ContainerClient($chosenHost);
+        $container = $containerClient->getContainerInfo($_GET['container-id']);
 
-        if (!isset($GLOBALS['container'])) die();
+        if (is_null($container)) die();
     }  else die();
 ?>
+
+<div class="col-md-8 ml-auto mr-auto">
 
 <div class="card">
     <div class="card-header card-header-tabs card-header-primary">
@@ -85,6 +88,8 @@
             </div>
         </div>
     </div>
+</div>
+
 </div>
 
 <script src="./container/log.js"></script>
