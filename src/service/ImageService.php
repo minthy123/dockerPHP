@@ -34,7 +34,6 @@
 
         public function isOSNeededGPU(Image $image) : bool {
             $this->getHistoriesAndBaseImage($image);
-            var_dump($image->getBaseImageName());
             $libraryEntity = $this->libraryService->getOperatingSystem($image->getBaseImageName());
 
             if ($libraryEntity == null) return false;

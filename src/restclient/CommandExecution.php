@@ -1,4 +1,6 @@
 <?php
+    include_once (__DIR__."/../service/HostService.php");
+
 	class CommandExecution {
 		function executeSteam($cmd, string $pathExecution = './') {
 
@@ -24,6 +26,13 @@
 			    }
 			}
 		}
+
+		public function replaceHost(string $cmd, $hostId){
+            $hostService = new HostService();
+            $host = $hostService->getHostById((int) $hostId);
+
+            return str_replace("docker ", "docker -H tcp://".$host->getIp().":".$host->getPort()." ", $cmd);
+        }
 	}
 
 	if (isset($_POST['cmd'])) {

@@ -1,3 +1,4 @@
+<?php include_once(__DIR__."/host/HostChoosing.php"); ?>
 <!--
 =========================================================
  Material Dashboard - v2.1.1

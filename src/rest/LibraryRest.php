@@ -49,7 +49,7 @@
     if ($_SERVER['REQUEST_METHOD'] == "PUT") {
         parse_str(file_get_contents('php://input'), $_PUT);
 
-        var_dump($_PUT);
+        //var_dump($_PUT);
         $libraryService = new LibraryService();
 
         $library = new LibraryModel();

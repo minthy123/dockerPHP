@@ -4,9 +4,12 @@
     include_once (__DIR__."/../../restclient/ImageClient.php");
     include_once (__DIR__."/../../restclient/ContainerClient.php");
     $libraryService = new LibraryService();
-    $imageClient = new ImageClient();
+
     $hostService = new HostService();
-    $containerClient = new ContainerClient();
+    $hosts = $hostService->getAll();
+    $chosenHost = $hosts[0];
+    $imageClient = new ImageClient($chosenHost);
+    $containerClient = new ContainerClient($chosenHost);
 ?>
 
 
@@ -124,7 +127,7 @@
                             <i class="material-icons dash-icon">create</i>
                         </div>
                         <div class="col-md-9">
-                            <h4 class="create-new">Create a new dockerfile</h4>
+                            <h4 class="create-new">Create Dockerfile</h4>
                         </div>
                     </div>
                 </div>

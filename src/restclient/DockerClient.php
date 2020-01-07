@@ -95,7 +95,7 @@
 //            $postfields = http_build_query("@$filedata");
 
             $postfields = file_get_contents($filedata);
-            var_dump($this->curlClient);
+            //var_dump($this->curlClient);
 
             curl_setopt($this->curlClient, CURLOPT_HEADER, true);
             curl_setopt($this->curlClient, CURLOPT_HTTPHEADER, $headers);
@@ -125,7 +125,7 @@
 	        curl_setopt($this->curlClient, CURLOPT_CUSTOMREQUEST, "DELETE");
 			
 			$result = curl_exec($this->curlClient);
-			var_dump($result);
+			//var_dump($result);
 	        if ($result === FALSE) {
 	            $this->curlError = curl_error($this->curlClient);
 	            return array();

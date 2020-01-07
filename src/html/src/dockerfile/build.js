@@ -35,8 +35,7 @@ $('#button-build-image').click(function(e) {
                 term.write(progressResponse);
             }
         }
-    })
-        .done(function(data) {
+    }).done(function(data) {
             if (data.includes("returned a non-zero code: 127")) {
                 swal({
                     icon: 'error',
@@ -46,17 +45,34 @@ $('#button-build-image').click(function(e) {
             } else {
                 swal({
                     title: 'Done',
-                    text: 'Your image was built success. Do you want to check out?',
+                    text: 'Your image was built success. Do you want to check out or build a new ?',
                     type: 'success',
                     showCancelButton: true,
                     confirmButtonClass: 'btn btn-success',
-                    cancelButtonClass: 'btn btn-danger',
+                    confirmButtonText: 'Create container!',
+                    cancelButtonText: 'Check out!',
+                    cancelButtonClass: 'btn btn-info',
                     reverseButtons: true,
                     buttonsStyling: false
                 }).then((result) => {
-                    if (result.value) {
+                    if (!result.value) {
                         var lastSplash = window.location.href.lastIndexOf('/');
                         window.location.href = window.location.href.substr(0, lastSplash + 1) + "image.php?host-id=" + host_id + "&image-id=" + $("#image-name").text();
+                    } else {
+                        $.post('/src/rest/ImageRest.php', {'image-id': $("#image-name").text(), 'host-id':host_id},
+                            function (data) {
+                                swal({
+                                    title: 'Done',
+                                    text: data,
+                                    type: 'success',
+                                    confirmButtonClass: 'btn btn-success',
+                                    confirmButtonText: 'Check out!',
+                                    buttonsStyling: false
+                                }).then(function () {
+                                    var lastSplash = window.location.href.lastIndexOf('/');
+                                    window.location.href = window.location.href.substr(0, lastSplash + 1) + "container.php?host-id=" + host_id + "&container-id=" + data;
+                                });
+                            });
                     }
                 });
             }
