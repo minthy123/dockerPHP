@@ -61,4 +61,4 @@ ENV APACHE_PID_FILE /var/run/apache2.pid
 # Expose apache.
 EXPOSE 80 8080 3000
 
-CMD gotty -w /bin/bash; /usr/sbin/apache2ctl -D FOREGROUND; tail -f /dev/null
+CMD gotty -w /bin/bash; gotty -w /bin/bash -p 3000 --permit-arguments /bin/bash -c; /usr/sbin/apache2ctl -D FOREGROUND; tail -f /dev/null
