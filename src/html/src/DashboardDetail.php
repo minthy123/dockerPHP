@@ -170,6 +170,19 @@
     </div>
 </div>
 
+<style>
+    .dash-icon {
+        text-align: center;
+        margin: 10px;
+        font-size: 50px
+    }
+
+    .create-new {
+        font-size: 1.3625rem;
+        margin-top: 20px;
+    }
+</style>
+
 <div class="row">
     <div class="col-md-6">
         <?php
@@ -183,15 +196,3 @@
     </div>
 </div>
 
-<style>
-    .dash-icon {
-        text-align: center;
-        margin: 10px;
-        font-size: 50px
-    }
-
-    .create-new {
-        font-size: 1.3625rem;
-        margin-top: 20px;
-    }
-</style>
