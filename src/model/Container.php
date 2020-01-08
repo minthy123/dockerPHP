@@ -1,7 +1,7 @@
 <?php
-	require_once('Image.php');
-	require_once('Port.php');
-	require_once ('Network.php');
+	require_once(__DIR__.'/Image.php');
+	require_once(__DIR__.'/Port.php');
+	require_once (__DIR__.'/Network.php');
 
 	class Container {
 		

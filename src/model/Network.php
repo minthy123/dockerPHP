@@ -1,5 +1,5 @@
 <?php
-    include_once ("Port.php");
+    include_once (__DIR__."/Port.php");
     class Network {
         private $bridge;
         private $sandboxId;
